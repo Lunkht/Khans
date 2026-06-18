@@ -449,7 +449,7 @@ function generateFusionSuggestions(languages) {
 // === Load Full Languages Dataset ===
 async function loadFullLanguages() {
   try {
-    const response = await fetch('data/languages_full.json');
+    const response = await fetch('../data/languages_full.json');
     if (response.ok) {
       fullLanguages = await response.json();
       console.log('Loaded full dataset:', fullLanguages.length);
@@ -1493,95 +1493,100 @@ function buildProprosLanguage() {
 
 function performProprosBuild() {
   const resultBox = document.getElementById('propros-result');
-  if (!resultBox) return;
+  if (!resultBox) { console.error('propros-result not found'); return; }
+
+  resultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
   if (!fullLanguages || fullLanguages.length === 0) {
-    resultBox.innerHTML = `<div class="text-center text-orange-300 py-8">⚠ Données complètes non chargées. Vérifiez le fichier data/languages_full.json.</div>`;
+    resultBox.innerHTML = `<div class="text-center text-orange-300 py-8">⚠ Données complètes non chargées.</div>`;
     return;
   }
 
   resultBox.innerHTML = `<div class="text-center py-8 text-purple-300"><i class="fa-solid fa-flask fa-spin mr-2"></i> Analyse de ${fullLanguages.length} associations langue-pays...</div>`;
 
   setTimeout(() => {
-    const buildResult = buildProprosLanguage();
+    try {
+      const buildResult = buildProprosLanguage();
 
-    if (buildResult.error) {
-      resultBox.innerHTML = `<div class="text-center text-orange-300 py-8">${buildResult.error}</div>`;
-      return;
-    }
+      if (buildResult.error) {
+        resultBox.innerHTML = `<div class="text-center text-orange-300 py-8">${buildResult.error}</div>`;
+        return;
+      }
 
-    const lang = buildResult.language;
-    const metrics = buildResult.metrics;
+      const lang = buildResult.language;
+      const metrics = buildResult.metrics;
 
-    let lexiconHTML = '';
-    const keys = ['hello', 'water', 'mother', 'one', 'two', 'three', 'sun', 'moon', 'fire', 'earth', 'man', 'woman', 'eat', 'sleep', 'big', 'good', 'house', 'tree', 'fish'];
-    const labels = ['Bonjour', 'Eau', 'Mère', 'Un', 'Deux', 'Trois', 'Soleil', 'Lune', 'Feu', 'Terre', 'Homme', 'Femme', 'Manger', 'Dormir', 'Grand', 'Bon', 'Maison', 'Arbre', 'Poisson'];
-    keys.forEach((k, i) => {
-      lexiconHTML += `<div class="bg-zinc-800/50 rounded-xl px-3 py-2"><span class="text-purple-400 text-[10px] block">${labels[i]}</span><span class="font-medium text-sm">${lang[k] || '—'}</span></div>`;
-    });
+      let lexiconHTML = '';
+      const keys = ['hello', 'water', 'mother', 'one', 'two', 'three', 'sun', 'moon', 'fire', 'earth', 'man', 'woman', 'eat', 'sleep', 'big', 'good', 'house', 'tree', 'fish'];
+      const labels = ['Bonjour', 'Eau', 'Mère', 'Un', 'Deux', 'Trois', 'Soleil', 'Lune', 'Feu', 'Terre', 'Homme', 'Femme', 'Manger', 'Dormir', 'Grand', 'Bon', 'Maison', 'Arbre', 'Poisson'];
+      keys.forEach((k, i) => {
+        lexiconHTML += `<div class="bg-zinc-800/50 rounded-xl px-3 py-2"><span class="text-purple-400 text-[10px] block">${labels[i]}</span><span class="font-medium text-sm">${lang[k] || '—'}</span></div>`;
+      });
 
-    const html = `
-      <div class="flex items-start justify-between gap-4 mb-4 flex-wrap">
-        <div class="min-w-0">
-          <div class="text-purple-300 text-sm font-medium flex items-center gap-2">
-            <i class="fa-solid fa-flask"></i> PROPROS LANGUE RECONSTRUITE
+      const html = `
+        <div class="flex items-start justify-between gap-4 mb-4 flex-wrap">
+          <div class="min-w-0">
+            <div class="text-purple-300 text-sm font-medium flex items-center gap-2">
+              <i class="fa-solid fa-flask"></i> PROPROS LANGUE RECONSTRUITE
+            </div>
+            <div class="text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight break-words">${lang.name}</div>
+            <div class="font-mono text-xs mt-0.5 text-purple-400">${lang.iso} • ${lang.family}</div>
           </div>
-          <div class="text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight break-words">${lang.name}</div>
-          <div class="font-mono text-xs mt-0.5 text-purple-400">${lang.iso} • ${lang.family}</div>
+          <div class="text-right shrink-0">
+            <div class="text-xs text-zinc-400">Associations analysées</div>
+            <div class="text-3xl sm:text-4xl lg:text-5xl font-bold text-purple-400">${metrics.fullTotal}<span class="text-xs sm:text-base align-super text-zinc-400"> entrées</span></div>
+          </div>
         </div>
-        <div class="text-right shrink-0">
-          <div class="text-xs text-zinc-400">Associations analysées</div>
-          <div class="text-3xl sm:text-4xl lg:text-5xl font-bold text-purple-400">${metrics.fullTotal}<span class="text-xs sm:text-base align-super text-zinc-400"> entrées</span></div>
-        </div>
-      </div>
 
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4 text-xs">
-        <div class="bg-zinc-900 rounded-2xl p-3 text-center">
-          <span class="text-zinc-400">Inclus (full dataset)</span><br><span class="text-lg font-bold text-emerald-400">${metrics.fullIncluded}</span><br><span class="text-[10px] text-zinc-500">langues uniques</span>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4 text-xs">
+          <div class="bg-zinc-900 rounded-2xl p-3 text-center">
+            <span class="text-zinc-400">Inclus (full)</span><br><span class="text-lg font-bold text-emerald-400">${metrics.fullIncluded}</span><br><span class="text-[10px] text-zinc-500">langues uniques</span>
+          </div>
+          <div class="bg-zinc-900 rounded-2xl p-3 text-center">
+            <span class="text-zinc-400">Exclus (full)</span><br><span class="text-lg font-bold text-orange-400">${metrics.fullExcluded}</span><br><span class="text-[10px] text-zinc-500">langues</span>
+          </div>
+          <div class="bg-zinc-900 rounded-2xl p-3 text-center">
+            <span class="text-zinc-400">Core inclus</span><br><span class="text-lg font-bold text-emerald-400">${metrics.coreIncluded}</span><br><span class="text-[10px] text-zinc-500">avec lexique</span>
+          </div>
+          <div class="bg-zinc-900 rounded-2xl p-3 text-center">
+            <span class="text-zinc-400">Core exclus</span><br><span class="text-lg font-bold text-orange-400">${metrics.coreExcluded}</span><br><span class="text-[10px] text-zinc-500">sans données</span>
+          </div>
         </div>
-        <div class="bg-zinc-900 rounded-2xl p-3 text-center">
-          <span class="text-zinc-400">Exclus (full dataset)</span><br><span class="text-lg font-bold text-orange-400">${metrics.fullExcluded}</span><br><span class="text-[10px] text-zinc-500">langues uniques</span>
-        </div>
-        <div class="bg-zinc-900 rounded-2xl p-3 text-center">
-          <span class="text-zinc-400">Core avec lexique</span><br><span class="text-lg font-bold text-emerald-400">${metrics.coreIncluded}</span><br><span class="text-[10px] text-zinc-500">langues sources</span>
-        </div>
-        <div class="bg-zinc-900 rounded-2xl p-3 text-center">
-          <span class="text-zinc-400">Core exclues</span><br><span class="text-lg font-bold text-orange-400">${metrics.coreExcluded}</span><br><span class="text-[10px] text-zinc-500">sans données</span>
-        </div>
-      </div>
 
-      <div class="bg-zinc-900 border border-purple-800/40 rounded-2xl p-3 sm:p-4 mb-4">
-        <div class="text-[10px] sm:text-xs uppercase tracking-widest mb-2 text-purple-400/80">Lexique propros reconstruit (19 mots)</div>
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1.5 sm:gap-2">
-          ${lexiconHTML}
+        <div class="bg-zinc-900 border border-purple-800/40 rounded-2xl p-3 sm:p-4 mb-4">
+          <div class="font-medium text-xs mb-2">Lexique reconstruit (19 mots)</div>
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1.5 sm:gap-2">
+            ${lexiconHTML}
+          </div>
         </div>
-      </div>
 
-      <div class="text-xs grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
-        <div class="bg-zinc-900 rounded-2xl p-2.5 sm:p-3">
-          <div class="font-medium mb-1 text-xs">Langues sources (${metrics.coreIncluded})</div>
-          <div class="text-purple-300 text-[10px] sm:text-[11px] break-words">${metrics.sourceNames.join(', ')}</div>
+        <div class="text-xs grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+          <div class="bg-zinc-900 rounded-2xl p-2.5 sm:p-3">
+            <div class="font-medium mb-1 text-xs">Sources (${metrics.coreIncluded})</div>
+            <div class="text-purple-300 text-[10px] sm:text-[11px] break-words">${metrics.sourceNames.join(', ')}</div>
+          </div>
+          <div class="bg-zinc-900 rounded-2xl p-2.5 sm:p-3">
+            <div class="font-medium mb-1 text-xs">Exclues (${metrics.coreExcluded})</div>
+            <div class="text-orange-300 text-[10px] sm:text-[11px] break-words">${metrics.excludedNames.length > 0 ? metrics.excludedNames.join(', ') : 'aucune'}</div>
+          </div>
         </div>
-        <div class="bg-zinc-900 rounded-2xl p-2.5 sm:p-3">
-          <div class="font-medium mb-1 text-xs">Exclues (${metrics.coreExcluded})</div>
-          <div class="text-orange-300 text-[10px] sm:text-[11px] break-words">${metrics.excludedNames.length > 0 ? metrics.excludedNames.join(', ') : 'aucune'}</div>
+
+        <div class="mt-4 flex flex-col sm:flex-row gap-2">
+          <button onclick="addFusedLanguageToList('${lang.id}')"
+                  class="w-full sm:flex-1 py-2.5 sm:py-2 text-xs bg-purple-600 hover:bg-purple-700 rounded-3xl font-medium">Ajouter au catalogue</button>
+          <button onclick="performProprosBuild()"
+                  class="w-full sm:flex-1 py-2.5 sm:py-2 text-xs bg-zinc-800 hover:bg-zinc-700 rounded-3xl">🔄 Reconstruire</button>
         </div>
-      </div>
+      `;
 
-      <div class="mt-4 flex flex-col sm:flex-row gap-2">
-        <button onclick="addFusedLanguageToList('${lang.id}')"
-                class="w-full sm:flex-1 py-2.5 sm:py-2 text-xs bg-purple-600 hover:bg-purple-700 rounded-3xl font-medium">Ajouter au catalogue</button>
-        <button onclick="performProprosBuild()"
-                class="w-full sm:flex-1 py-2.5 sm:py-2 text-xs bg-zinc-800 hover:bg-zinc-700 rounded-3xl">🔄 Reconstruire</button>
-      </div>
-    `;
+      resultBox.innerHTML = html;
+      window.lastFusedLanguage = lang;
+      resultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-    resultBox.innerHTML = html;
-    window.lastFusedLanguage = lang;
-
-    setTimeout(() => {
-      document.getElementById('propros-section').scrollIntoView({ behavior: 'smooth' });
-    }, 200);
+    } catch (e) {
+      console.error('Propros build error:', e);
+      resultBox.innerHTML = `<div class="text-center text-red-400 py-8">⚠ Erreur: ${e.message}</div>`;
+    }
   }, 300);
 }
 
