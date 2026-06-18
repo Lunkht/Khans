@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AfriLang • Langues d'Afrique</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+        
+        :root {
+            --primary: #27272a;
+        }
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .title-font {
+            font-family: 'Space Grotesk', 'Inter', sans-serif;
+            font-weight: 600;
+        }
+
+        .lang-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .lang-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .nav-active {
+            color: #27272a;
+            font-weight: 600;
+            border-bottom: 2px solid #27272a;
+        }
+
+        .africa-gradient {
+            background: linear-gradient(135deg, #27272a, #18181b);
+        }
+
+        .section-header {
+            font-size: 2.25rem;
+            line-height: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        .language-badge {
+            font-size: 0.75rem;
+            padding: 0.125rem 0.5rem;
+            border-radius: 9999px;
+        }
+
+        .similarity-bar {
+            height: 6px;
+            background: linear-gradient(to right, #52525b, #27272a);
+            transition: width 0.5s ease;
+        }
+
+        .modal {
+            animation: modalPop 0.2s ease forwards;
+        }
+
+        .word-comparison {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        .flag {
+            font-size: 1.1rem;
+            line-height: 1;
+        }
+
+        .nav-link {
+            transition: all 0.2s ease;
+        }
+        
+        .nav-link:hover {
+            color: #52525b;
+        }
+
+        .lang-filter {
+            transition: all 0.2s ease;
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-zinc-200">
+    <!-- Navbar -->
+    <nav class="bg-zinc-900 border-b border-zinc-800 sticky top-0 z-50">
+        <div class="max-w-screen-2xl mx-auto">
+            <div class="px-8 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-x-3">
+                    <div class="w-10 h-10 africa-gradient rounded-2xl flex items-center justify-center">
+                        <i class="fa-solid fa-globe text-white text-3xl"></i>
+                    </div>
+                    <div>
+                        <span class="title-font text-3xl font-bold tracking-tighter">AfriLang</span>
+                        <span class="text-zinc-400 text-xs font-medium tracking-[2px] block -mt-1">AFRICA</span>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center gap-x-8 text-sm">
+                    <a href="#explorer" class="nav-link font-medium px-3 py-1.5">Explorer</a>
+                    <a href="#similarites" class="nav-link font-medium px-3 py-1.5">Similitudes</a>
+                    <a href="#algorithme" class="nav-link font-medium px-3 py-1.5">Algorithme</a>
+                    <a href="#donnees" class="nav-link font-medium px-3 py-1.5">Données</a>
+                </div>
+
+                <div class="flex items-center gap-x-3">
+                    <div class="hidden sm:flex items-center bg-zinc-900 border border-zinc-800 rounded-3xl px-1.5 py-1 text-sm">
+                        <div class="flex items-center px-3">
+                            <div class="w-2 h-2 bg-zinc-400 rounded-full animate-pulse"></div>
+                            <span class="ml-2 text-zinc-400 text-xs font-semibold">2,646 langues</span>
+                        </div>
+                    </div>
+                    
+                    <button onclick="showAddLanguageModal()"
+                            class="flex items-center gap-x-2 px-4 py-2 text-sm font-medium bg-white text-zinc-900 hover:bg-zinc-100 transition-colors rounded-3xl">
+                        <i class="fa-solid fa-plus text-xs"></i>
+                        <span class="hidden sm:inline">Ajouter</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="max-w-screen-2xl mx-auto px-8 pt-10 pb-8">
+        <div class="max-w-2xl">
+            <div class="inline-flex items-center px-4 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-medium mb-4">
+                <i class="fa-solid fa-earth-africa mr-2 text-zinc-400"></i>
+                <span>Projet open source • 2026</span>
+            </div>
+            
+            <h1 class="text-6xl leading-[1.05] tracking-tighter font-bold title-font">
+                Le patrimoine<br>linguistique<br>de l'<span class="bg-gradient-to-r from-zinc-100 to-zinc-300 bg-clip-text text-transparent">Afrique</span>
+            </h1>
+            <p class="mt-5 text-xl text-zinc-400 max-w-md">
+                Regroupons, explorons et analysons les similitudes entre les plus de 2 000 langues d'Afrique.
+            </p>
+            
+            <div class="mt-8 flex items-center gap-x-3">
+                <a href="#explorer" 
+                   class="inline-flex items-center px-6 py-3.5 bg-zinc-800 hover:bg-zinc-700 transition-colors rounded-3xl text-sm font-semibold">
+                    <span>Explorer les langues</span>
+                </a>
+                <a href="#algorithme" 
+                   class="inline-flex items-center px-6 py-3.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 transition-colors rounded-3xl text-sm font-semibold">
+                    <i class="fa-solid fa-microchip mr-2"></i>
+                    <span>Voir l'algorithme</span>
+                </a>
+            </div>
+            
+            <div class="mt-8 flex items-center gap-x-6 text-xs text-zinc-500">
+                <div class="flex -space-x-2 items-center">
+                    <div class="w-6 h-6 bg-zinc-800 border border-zinc-700 rounded-full flex items-center justify-center text-[10px]">🇹🇿</div>
+                    <div class="w-6 h-6 bg-zinc-800 border border-zinc-700 rounded-full flex items-center justify-center text-[10px]">🇳🇬</div>
+                    <div class="w-6 h-6 bg-zinc-800 border border-zinc-700 rounded-full flex items-center justify-center text-[10px]">🇪🇹</div>
+                    <div class="w-6 h-6 bg-zinc-800 border border-zinc-700 rounded-full flex items-center justify-center text-[10px]">🇿🇦</div>
+                </div>
+                <div>Données issues de SIL + Ethnologue + contributions communautaires</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="max-w-screen-2xl mx-auto px-8 pb-10">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5">
+                <div class="flex items-baseline gap-x-1">
+                    <span class="text-4xl font-bold">2,646</span>
+                </div>
+                <div class="text-xs text-zinc-400 font-medium mt-1">LANGUES DOCUMENTÉES</div>
+                <div class="text-[10px] text-zinc-500 mt-3">Couvrant 54 pays</div>
+            </div>
+            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5">
+                <div class="flex items-baseline gap-x-1">
+                    <span class="text-4xl font-bold">4</span>
+                    <span class="text-sm text-zinc-400">familles</span>
+                </div>
+                <div class="text-xs text-zinc-400 font-medium mt-1">PRINCIPALES FAMILLES LINGUISTIQUES</div>
+                <div class="flex gap-x-1 mt-3 text-xs">
+                    <span class="px-2 py-px bg-zinc-800 rounded">Niger-Congo</span>
+                    <span class="px-2 py-px bg-zinc-800 rounded">Afroasiatic</span>
+                </div>
+            </div>
+            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5">
+                <div class="flex items-baseline gap-x-1">
+                    <span class="text-4xl font-bold">1.2B</span>
+                </div>
+                <div class="text-xs text-zinc-400 font-medium mt-1">LOCUTEURS</div>
+                <div class="text-[10px] text-zinc-500 mt-3">Environ 1/6 de la population mondiale</div>
+            </div>
+            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5">
+                <div class="flex items-baseline gap-x-1">
+                    <span class="text-4xl font-bold">312</span>
+                </div>
+                <div class="text-xs text-zinc-400 font-medium mt-1">LANGUES AVEC DONNÉES COMPARATIVES</div>
+                <div class="text-[10px] text-zinc-500 mt-3">Pour l'algorithme de similarité</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Explorer Section -->
+    <div id="explorer" class="max-w-screen-2xl mx-auto px-8 pt-6 pb-12">
+        <div class="flex items-end justify-between mb-6">
+            <div>
+                <h2 class="text-3xl font-bold tracking-tight">Explorer les langues</h2>
+                <p class="text-zinc-400">Filtrez par famille, région ou recherchez par nom</p>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <div class="relative">
+                    <input id="search-input" 
+                           onkeyup="filterLanguages()"
+                           type="text" 
+                           placeholder="Rechercher une langue..." 
+                           class="w-80 bg-zinc-900 border border-zinc-800 focus:border-zinc-600 outline-none text-sm rounded-3xl py-2.5 pl-10 pr-4">
+                    <i class="fa-solid fa-search absolute left-4 top-3 text-zinc-500"></i>
+                </div>
+                
+                <select id="family-filter" onchange="filterLanguages()" 
+                        class="bg-zinc-900 border border-zinc-800 text-sm rounded-3xl px-4 py-[9px] outline-none">
+                    <option value="">Toutes familles</option>
+                    <option value="Niger-Congo">Niger-Congo</option>
+                    <option value="Afroasiatic">Afroasiatic</option>
+                    <option value="Nilo-Saharan">Nilo-Saharan</option>
+                    <option value="Khoe-Kwadi">Khoe-Kwadi</option>
+                    <option value="Austronesian">Austronesian</option>
+                    <option value="Indo-European">Indo-European</option>
+                </select>
+                
+                <select id="region-filter" onchange="filterLanguages()" 
+                        class="bg-zinc-900 border border-zinc-800 text-sm rounded-3xl px-4 py-[9px] outline-none">
+                    <option value="">Toutes régions</option>
+                    <option value="West Africa">Afrique de l'Ouest</option>
+                    <option value="East Africa">Afrique de l'Est</option>
+                    <option value="North Africa">Afrique du Nord</option>
+                    <option value="Southern Africa">Afrique australe</option>
+                    <option value="Central Africa">Afrique centrale</option>
+                    <option value="Horn of Africa">Corne de l'Afrique</option>
+                    <option value="Madagascar">Madagascar</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Languages Grid -->
+        <div id="languages-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+            <!-- Populated by JS -->
+        </div>
+        
+        <div class="mt-6 flex justify-center">
+            <button onclick="showMoreLanguages()" 
+                    class="px-5 py-2.5 text-sm border border-zinc-700 hover:bg-zinc-900 transition-colors rounded-3xl flex items-center gap-x-2 text-zinc-300">
+                <span id="show-more-text">Afficher plus de langues</span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Similitudes Section -->
+    <div id="similarites" class="bg-zinc-900 border-y border-zinc-800 py-12">
+        <div class="max-w-screen-2xl mx-auto px-8">
+            <div class="flex items-end justify-between mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold tracking-tight">Similitudes linguistiques</h2>
+                    <p class="text-zinc-400">Découvrez les liens entre langues grâce à notre algorithme</p>
+                </div>
+                <button onclick="runSimilarityDemo()" 
+                        class="px-5 py-2.5 text-sm bg-zinc-800 hover:bg-zinc-700 transition-colors font-medium rounded-3xl flex items-center gap-x-2">
+                    <i class="fa-solid fa-sync-alt"></i>
+                    <span>Recalculer les correspondances</span>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Top similarities -->
+                <div class="lg:col-span-7 bg-zinc-950 border border-zinc-800 rounded-3xl p-6">
+                    <div class="flex justify-between mb-5 items-center">
+                        <div class="font-semibold">Top correspondances (basé sur 312 langues)</div>
+                        <div class="text-xs text-zinc-400">Score de similarité lexicale</div>
+                    </div>
+                    
+                    <div id="top-similarities" class="space-y-3">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Language comparison tool -->
+                <div class="lg:col-span-5 bg-zinc-950 border border-zinc-800 rounded-3xl p-6">
+                    <div class="font-semibold mb-4">Comparer deux langues</div>
+                    
+                    <div class="grid grid-cols-5 gap-3 items-center">
+                        <div class="col-span-2">
+                            <select id="compare-lang1" class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-3 py-2 text-sm" onchange="compareSelectedLanguages()">
+                                <!-- populated by JS -->
+                            </select>
+                        </div>
+                        <div class="text-center text-xs text-zinc-500 col-span-1">
+                            <i class="fa-solid fa-arrows-alt-h"></i>
+                        </div>
+                        <div class="col-span-2">
+                            <select id="compare-lang2" class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-3 py-2 text-sm" onchange="compareSelectedLanguages()">
+                                <!-- populated by JS -->
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div id="comparison-result" class="mt-5 min-h-[110px]">
+                        <!-- JS populated -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Algorithme Section -->
+    <div id="algorithme" class="max-w-screen-2xl mx-auto px-8 py-12">
+        <h2 class="text-3xl font-bold tracking-tight mb-2">L'algorithme de reconnaissance</h2>
+        <p class="text-zinc-400 mb-8 max-w-lg">Comment AfriLang calcule les similitudes et correspondances entre langues.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Step 1 -->
+            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+                <div class="flex items-center gap-x-3 mb-4">
+                    <div class="w-8 h-8 flex-shrink-0 bg-zinc-900 text-zinc-300 rounded-2xl flex items-center justify-center font-bold">1</div>
+                    <div class="font-semibold">Extraction des données lexicales</div>
+                </div>
+                <p class="text-sm text-zinc-400">Pour chaque langue, nous collectons un lexique de base (mots de Swadesh) : eau, mère, un, deux, trois, bonjour, etc.</p>
+                
+                <div class="mt-4 text-xs bg-zinc-950 border border-zinc-800 px-3 py-3 rounded-2xl">
+                    <div class="font-mono text-zinc-300">Exemple pour Swahili :</div>
+                    <div class="flex justify-between mt-1.5 text-xs">
+                        <div>water = Maji</div>
+                        <div>mother = Mama</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 2 -->
+            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+                <div class="flex items-center gap-x-3 mb-4">
+                    <div class="w-8 h-8 flex-shrink-0 bg-zinc-900 text-zinc-300 rounded-2xl flex items-center justify-center font-bold">2</div>
+                    <div class="font-semibold">Calcul de similarité</div>
+                </div>
+                <p class="text-sm text-zinc-400">Nous utilisons une combinaison de :</p>
+                <ul class="mt-3 text-xs space-y-1.5">
+                    <li class="flex items-center gap-x-2"><i class="fa-solid fa-check text-zinc-400 w-3"></i> <span>Distance de Levenshtein (orthographique)</span></li>
+                    <li class="flex items-center gap-x-2"><i class="fa-solid fa-check text-zinc-400 w-3"></i> <span>Similarité phonétique</span></li>
+                    <li class="flex items-center gap-x-2"><i class="fa-solid fa-check text-zinc-400 w-3"></i> <span>Correspondance sémantique des glosses</span></li>
+                    <li class="flex items-center gap-x-2"><i class="fa-solid fa-check text-zinc-400 w-3"></i> <span>Score familial + géographique</span></li>
+                </ul>
+                
+                <div class="text-xs mt-5 bg-zinc-950 p-3 rounded-2xl font-mono text-[10px] border border-zinc-800">
+                    score = (0.45 × levSim + 0.35 × phonSim + 0.2 × familyBonus)
+                </div>
+            </div>
+            
+            <!-- Step 3 -->
+            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+                <div class="flex items-center gap-x-3 mb-4">
+                    <div class="w-8 h-8 flex-shrink-0 bg-zinc-900 text-zinc-300 rounded-2xl flex items-center justify-center font-bold">3</div>
+                    <div class="font-semibold">Détection des correspondances</div>
+                </div>
+                <p class="text-sm text-zinc-400">L'algorithme identifie :</p>
+                <div class="mt-3 grid grid-cols-1 gap-y-1 text-xs">
+                    <div class="px-3 py-1.5 flex items-center justify-between bg-zinc-950 rounded-2xl">
+                        <span>Cognats potentiels</span> 
+                        <span class="font-medium text-zinc-300">&gt; 75%</span>
+                    </div>
+                    <div class="px-3 py-1.5 flex items-center justify-between bg-zinc-950 rounded-2xl">
+                        <span>Emprunts lexicaux</span> 
+                        <span class="font-medium text-zinc-300">60–75%</span>
+                    </div>
+                    <div class="px-3 py-1.5 flex items-center justify-between bg-zinc-950 rounded-2xl">
+                        <span>Relations distantes</span> 
+                        <span class="font-medium text-zinc-300">40–60%</span>
+                    </div>
+                </div>
+                
+                <button onclick="showAlgorithmDetails()" 
+                        class="mt-5 text-xs px-4 py-1.5 rounded-2xl border border-zinc-700 hover:bg-zinc-800 flex items-center gap-x-1.5 w-full justify-center">
+                    <span>Voir l'implémentation JS</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Données Section -->
+    <div id="donnees" class="bg-zinc-900 border-t border-zinc-800">
+        <div class="max-w-screen-2xl mx-auto px-8 py-12">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h2 class="text-3xl font-bold">Données ouvertes</h2>
+                    <p class="text-sm text-zinc-400">Téléchargez les données complètes</p>
+                </div>
+                <div class="flex gap-x-2">
+                    <button onclick="downloadJSON()" class="px-4 py-2 flex items-center text-sm rounded-3xl border border-zinc-700 hover:bg-zinc-800">
+                        <i class="fa-solid fa-download mr-2"></i> <span>JSON</span>
+                    </button>
+                    <button onclick="downloadCSV()" class="px-4 py-2 flex items-center text-sm rounded-3xl border border-zinc-700 hover:bg-zinc-800">
+                        <i class="fa-solid fa-download mr-2"></i> <span>CSV</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div class="bg-zinc-950 p-5 rounded-3xl border border-zinc-800">
+                    <div class="font-medium mb-1">languages_full.json</div>
+                    <div class="text-zinc-300 text-xs">2 646 langues • 54 pays</div>
+                    <div class="text-xs mt-3 text-zinc-400">Données brutes : nom, ISO 639-3, pays</div>
+                </div>
+                <div class="bg-zinc-950 p-5 rounded-3xl border border-zinc-800">
+                    <div class="font-medium mb-1">core_lexicon.json</div>
+                    <div class="text-zinc-300 text-xs">312 langues avec lexique de base</div>
+                    <div class="text-xs mt-3 text-zinc-400">25 mots de base pour l'algorithme</div>
+                </div>
+                <div class="bg-zinc-950 p-5 rounded-3xl border border-zinc-800">
+                    <div class="font-medium mb-1">similarity_matrix.json</div>
+                    <div class="text-zinc-300 text-xs">Précalculé pour performance</div>
+                    <div class="text-xs mt-3 text-zinc-400">Top 50 similitudes par langue</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="max-w-screen-2xl mx-auto px-8 py-10 border-t border-zinc-800 text-center text-xs text-zinc-500">
+        <div>Projet éducatif et culturel • AfriLang 2026</div>
+        <div class="mt-1">Les données sont ouvertes et contributives. Merci de contribuer sur <span class="font-medium">GitHub</span>.</div>
+    </div>
+
+    <!-- Language Detail Modal -->
+    <div id="lang-modal" onclick="if (event.target.id === 'lang-modal') hideLangModal()" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-[100]">
+        <div onclick="event.stopImmediatePropagation()" class="modal bg-zinc-900 border border-zinc-700 w-full max-w-lg mx-4 rounded-3xl overflow-hidden">
+            <div class="p-6">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <div id="modal-lang-name" class="text-3xl font-semibold"></div>
+                        <div class="flex items-center gap-x-2 mt-1">
+                            <span id="modal-lang-iso" class="font-mono text-sm bg-zinc-800 px-2 py-0.5 rounded-2xl"></span>
+                            <span id="modal-lang-family" class="text-xs px-2.5 py-0.5 bg-zinc-900 text-zinc-300 rounded-3xl"></span>
+                        </div>
+                    </div>
+                    <button onclick="hideLangModal()" class="text-zinc-400 hover:text-white">
+                        <i class="fa-solid fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <div class="my-5 grid grid-cols-2 gap-x-3 gap-y-4 text-sm">
+                    <div>
+                        <div class="text-zinc-400 text-xs">Région</div>
+                        <div id="modal-lang-region" class="font-medium"></div>
+                    </div>
+                    <div>
+                        <div class="text-zinc-400 text-xs">Pays principaux</div>
+                        <div id="modal-lang-countries" class="font-medium"></div>
+                    </div>
+                    <div>
+                        <div class="text-zinc-400 text-xs">Locuteurs</div>
+                        <div id="modal-lang-speakers" class="font-medium"></div>
+                    </div>
+                    <div>
+                        <div class="text-zinc-400 text-xs">Script</div>
+                        <div id="modal-lang-script" class="font-medium"></div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="font-medium mb-2 text-sm">Lexique de base</div>
+                    <div id="modal-lexicon" class="grid grid-cols-2 gap-2 text-sm"></div>
+                </div>
+            </div>
+            
+            <div class="bg-zinc-950 px-6 py-4 flex items-center justify-between border-t border-zinc-700">
+                <div class="text-xs text-zinc-300 cursor-pointer flex items-center gap-x-1.5" onclick="compareWithLanguage()">
+                    <i class="fa-solid fa-link"></i>
+                    <span>Comparer avec une autre langue</span>
+                </div>
+                <button onclick="hideLangModal()" class="px-4 py-1 text-sm font-medium">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
