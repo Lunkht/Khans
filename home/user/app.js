@@ -1513,57 +1513,57 @@ function performProprosBuild() {
     });
 
     const html = `
-      <div class="flex justify-between items-start mb-4">
-        <div>
-          <div class="text-emerald-300 text-sm font-medium flex items-center gap-2">
+      <div class="flex flex-col sm:flex-row justify-between items-start gap-2 mb-4">
+        <div class="min-w-0">
+          <div class="text-emerald-300 text-xs sm:text-sm font-medium flex items-center gap-2">
             <i class="fa-solid fa-flask"></i> PROPROS LANGUE RECONSTRUITE
           </div>
-          <div class="text-3xl font-semibold tracking-tight">${lang.name}</div>
+          <div class="text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight break-words">${lang.name}</div>
           <div class="font-mono text-xs mt-0.5 text-emerald-400">${lang.iso} • ${lang.family}</div>
           <div class="text-[10px] text-zinc-500 mt-1">Algorithme v3.0 • Reconstruction par clusters cognatiques</div>
         </div>
-        <div class="text-right">
-          <div class="text-xs text-zinc-400">Langues sources</div>
-          <div class="text-5xl font-bold text-emerald-400">${metrics.sourceCount}<span class="text-base align-super text-zinc-400">/${coreLanguages.length}</span></div>
-          <div class="text-xs text-orange-300">${metrics.excludedCount} exclues</div>
+        <div class="text-left sm:text-right shrink-0">
+          <div class="text-[10px] sm:text-xs text-zinc-400">Langues sources</div>
+          <div class="text-3xl sm:text-4xl lg:text-5xl font-bold text-emerald-400">${metrics.sourceCount}<span class="text-xs sm:text-base align-super text-zinc-400">/${coreLanguages.length}</span></div>
+          <div class="text-[10px] sm:text-xs text-orange-300">${metrics.excludedCount} exclues</div>
         </div>
       </div>
 
-      <div class="bg-zinc-900 border border-emerald-800/40 rounded-2xl p-4 mb-4">
-        <div class="text-xs uppercase tracking-widest mb-2 text-emerald-400/80">Lexique propros reconstruit (19 mots)</div>
-        <div class="grid grid-cols-3 sm:grid-cols-4 gap-2">
+      <div class="bg-zinc-900 border border-emerald-800/40 rounded-2xl p-3 sm:p-4 mb-4">
+        <div class="text-[10px] sm:text-xs uppercase tracking-widest mb-2 text-emerald-400/80">Lexique propros reconstruit (19 mots)</div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1.5 sm:gap-2">
           ${lexiconHTML}
         </div>
       </div>
 
-      <div class="text-xs grid grid-cols-2 gap-3">
-        <div class="bg-zinc-900 rounded-2xl p-3">
-          <div class="font-medium mb-1">Langues sources (${metrics.sourceCount})</div>
-          <div class="text-emerald-300 text-[11px]">${metrics.sourceNames.join(', ')}</div>
+      <div class="text-xs grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+        <div class="bg-zinc-900 rounded-2xl p-2.5 sm:p-3">
+          <div class="font-medium mb-1 text-xs">Langues sources (${metrics.sourceCount})</div>
+          <div class="text-emerald-300 text-[10px] sm:text-[11px] break-words">${metrics.sourceNames.join(', ')}</div>
         </div>
-        <div class="bg-zinc-900 rounded-2xl p-3">
-          <div class="font-medium mb-1">Exclues (${metrics.excludedCount})</div>
-          <div class="text-orange-300 text-[11px]">${metrics.excludedNames.length > 0 ? metrics.excludedNames.join(', ') : 'aucune'}</div>
-        </div>
-      </div>
-
-      <div class="mt-3 text-xs grid grid-cols-3 gap-2">
-        <div class="bg-zinc-900 rounded-xl p-2 text-center">
-          <span class="text-zinc-400">Régions</span><br><span class="font-medium">${metrics.regions.length}</span>
-        </div>
-        <div class="bg-zinc-900 rounded-xl p-2 text-center">
-          <span class="text-zinc-400">Familles</span><br><span class="font-medium">${metrics.families.length}</span>
-        </div>
-        <div class="bg-zinc-900 rounded-xl p-2 text-center">
-          <span class="text-zinc-400">Locuteurs</span><br><span class="font-medium">${(totalSpeakers = metrics.totalSpeakers) >= 1000000 ? Math.round(totalSpeakers / 1000000) + 'M' : Math.round(totalSpeakers / 1000) + 'k'}</span>
+        <div class="bg-zinc-900 rounded-2xl p-2.5 sm:p-3">
+          <div class="font-medium mb-1 text-xs">Exclues (${metrics.excludedCount})</div>
+          <div class="text-orange-300 text-[10px] sm:text-[11px] break-words">${metrics.excludedNames.length > 0 ? metrics.excludedNames.join(', ') : 'aucune'}</div>
         </div>
       </div>
 
-      <div class="mt-4 flex gap-2">
+      <div class="mt-3 text-xs grid grid-cols-3 gap-1.5 sm:gap-2">
+        <div class="bg-zinc-900 rounded-xl p-2 text-center">
+          <span class="text-zinc-400 text-[10px] sm:text-xs">Régions</span><br><span class="font-medium text-sm sm:text-base">${metrics.regions.length}</span>
+        </div>
+        <div class="bg-zinc-900 rounded-xl p-2 text-center">
+          <span class="text-zinc-400 text-[10px] sm:text-xs">Familles</span><br><span class="font-medium text-sm sm:text-base">${metrics.families.length}</span>
+        </div>
+        <div class="bg-zinc-900 rounded-xl p-2 text-center">
+          <span class="text-zinc-400 text-[10px] sm:text-xs">Locuteurs</span><br><span class="font-medium text-sm sm:text-base">${(totalSpeakers = metrics.totalSpeakers) >= 1000000 ? Math.round(totalSpeakers / 1000000) + 'M' : Math.round(totalSpeakers / 1000) + 'k'}</span>
+        </div>
+      </div>
+
+      <div class="mt-4 flex flex-col sm:flex-row gap-2">
         <button onclick="addFusedLanguageToList('${lang.id}')"
-                class="flex-1 py-2 text-xs bg-emerald-600 hover:bg-emerald-700 rounded-3xl font-medium">Ajouter au catalogue</button>
+                class="w-full sm:flex-1 py-2.5 sm:py-2 text-xs bg-emerald-600 hover:bg-emerald-700 rounded-3xl font-medium">Ajouter au catalogue</button>
         <button onclick="performProprosBuild()"
-                class="flex-1 py-2 text-xs bg-zinc-800 hover:bg-zinc-700 rounded-3xl">🔄 Reconstruire</button>
+                class="w-full sm:flex-1 py-2.5 sm:py-2 text-xs bg-zinc-800 hover:bg-zinc-700 rounded-3xl">🔄 Reconstruire</button>
       </div>
     `;
 
