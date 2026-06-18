@@ -474,7 +474,7 @@ async function loadFullLanguages() {
 }
 
 // === RENDER LANGUAGES GRID ===
-let currentDisplayCount = 18;
+let currentDisplayCount = 10;
 
 function renderLanguages(langs = coreLanguages) {
   const grid = document.getElementById('languages-grid');
@@ -540,12 +540,12 @@ function filterLanguages() {
     return matchSearch && matchFamily && matchRegion;
   });
 
-  currentDisplayCount = 18;
+  currentDisplayCount = 10;
   renderLanguages(filtered);
 }
 
 function showMoreLanguages() {
-  currentDisplayCount += 18;
+  currentDisplayCount += 10;
   const search = document.getElementById('search-input').value.toLowerCase().trim();
   const family = document.getElementById('family-filter').value;
   const region = document.getElementById('region-filter').value;
@@ -904,7 +904,7 @@ function addNewLanguage(btn) {
   
   // Refresh grid
   document.querySelector('#languages-grid').innerHTML = '';
-  currentDisplayCount = 18;
+  currentDisplayCount = 10;
   renderLanguages(coreLanguages);
   
   // Refresh compare selects
