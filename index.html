@@ -81,6 +81,72 @@
             color: #52525b;
         }
 
+        .hero-lighthouse {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: min(62vw, 760px);
+            height: min(52vw, 620px);
+            min-width: 260px;
+            min-height: 260px;
+            overflow: hidden;
+            pointer-events: none;
+            opacity: 0.9;
+        }
+
+        .hero-lighthouse::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 14% 78%, rgba(168, 85, 247, 0.72) 0 8%, rgba(126, 34, 206, 0.38) 22%, rgba(88, 28, 135, 0.18) 42%, transparent 68%),
+                radial-gradient(circle at 12% 82%, rgba(216, 180, 254, 0.55) 0 3%, transparent 24%);
+            filter: blur(1px);
+            animation: lighthouseGlow 4.8s ease-in-out infinite;
+        }
+
+        .hero-lighthouse::after {
+            content: '';
+            position: absolute;
+            left: 6%;
+            bottom: 18%;
+            width: 220%;
+            height: 42%;
+            transform-origin: 0 50%;
+            background:
+                linear-gradient(90deg, rgba(221, 214, 254, 0.78), rgba(168, 85, 247, 0.42) 18%, rgba(126, 34, 206, 0.18) 45%, transparent 78%),
+                linear-gradient(90deg, transparent, rgba(233, 213, 255, 0.5), transparent);
+            clip-path: polygon(0 42%, 100% 0, 100% 100%, 0 58%);
+            animation: lighthouseSweep 6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+            mix-blend-mode: screen;
+        }
+
+        @keyframes lighthouseGlow {
+            0%, 100% {
+                opacity: 0.55;
+                transform: scale(0.96);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.04);
+            }
+        }
+
+        @keyframes lighthouseSweep {
+            0%, 100% {
+                transform: rotate(-16deg);
+                opacity: 0.2;
+            }
+            42%, 58% {
+                transform: rotate(10deg);
+                opacity: 1;
+            }
+            72% {
+                transform: rotate(18deg);
+                opacity: 0.35;
+            }
+        }
+
         .lang-filter {
             transition: all 0.2s ease;
         }
@@ -124,8 +190,9 @@
     </nav>
 
     <!-- Hero -->
-    <div class="max-w-screen-2xl mx-auto px-8 pt-10 pb-8">
-        <div class="max-w-2xl">
+    <div class="relative max-w-screen-2xl mx-auto px-8 pt-10 pb-8">
+        <div class="hero-lighthouse"></div>
+        <div class="relative z-10 max-w-2xl">
             <div class="inline-flex items-center px-4 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-medium mb-4">
                 <i class="fa-solid fa-earth-africa mr-2 text-zinc-400"></i>
                 <span>Projet open source • 2026</span>
