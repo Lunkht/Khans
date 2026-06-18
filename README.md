@@ -1,4 +1,4 @@
-# AfriLang — Site des langues d'Afrique + Algorithme de similarité
+# Khans — Site des langues d'Afrique + Algorithme de similarité
 
 Un site web moderne et interactif pour explorer les langues d'Afrique et découvrir leurs similitudes grâce à un algorithme de reconnaissance.
 
@@ -53,4 +53,4 @@ function calculateSimilarity(lang1, lang2) {
 
 Le projet est prêt à être étendu (ajout de plus de mots, API, etc.).
 
-**AfriLang 2026** — Patrimoine linguistique africain
+**Khans 2026** — Patrimoine linguistique africain

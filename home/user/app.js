@@ -1,4 +1,4 @@
-// AfriLang - Complete JavaScript for African Languages Explorer + Similarity Algorithm
+// Khans - Complete JavaScript for African Languages Explorer + Similarity Algorithm
 
 // === CORE DATA: 26 languages with RICH lexical data (expanded for better fusion) ===
 const coreLanguages = [
@@ -160,7 +160,7 @@ function levenshtein(a, b) {
   return matrix[b.length][a.length];
 }
 
-// === Similarity Algorithm (Core of AfriLang) ===
+// === Similarity Algorithm (Core of Khans) ===
 function calculateSimilarity(lang1, lang2) {
   if (lang1.id === lang2.id) return 100;
 
@@ -936,7 +936,7 @@ async function init() {
   });
 
   // Initial message
-  console.log('%c[AfriLang] Site + Algorithme de Fusion Probabiliste initialisés avec succès (v2.0).', 'color:#166534');
+  console.log('%c[Khans] Site + Algorithme de Fusion Probabiliste initialisés avec succès (v2.0).', 'color:#166534');
 }
 
 // =====================================================

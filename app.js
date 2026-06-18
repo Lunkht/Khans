@@ -1,33 +1,33 @@
-// AfriLang - Complete JavaScript for African Languages Explorer + Similarity Algorithm
+// Khans - Complete JavaScript for Khansn Languages Explorer + Similarity Algorithm
 
 // === CORE DATA: 26 languages with lexical data for similarity algorithm ===
 const coreLanguages = [
-  { id: 1, name: "Swahili", iso: "sw", family: "Niger-Congo", subfamily: "Bantu", region: "East Africa", countries: ["Tanzania", "Kenya", "Uganda", "DRC", "Rwanda"], speakers: 200000000, script: "Latin", hello: "Jambo", water: "Maji", mother: "Mama", one: "Moja", two: "Mbili", three: "Tatu" },
-  { id: 2, name: "Hausa", iso: "ha", family: "Afroasiatic", subfamily: "Chadic", region: "West Africa", countries: ["Nigeria", "Niger"], speakers: 80000000, script: "Latin", hello: "Sannu", water: "Ruwa", mother: "Uwa", one: "Daya", two: "Biyu", three: "Uku" },
-  { id: 3, name: "Yoruba", iso: "yo", family: "Niger-Congo", subfamily: "Volta-Niger", region: "West Africa", countries: ["Nigeria", "Benin"], speakers: 50000000, script: "Latin", hello: "Ẹnlẹ", water: "Omi", mother: "Ìyá", one: "Ọkan", two: "Èjì", three: "Ẹta" },
-  { id: 4, name: "Igbo", iso: "ig", family: "Niger-Congo", subfamily: "Volta-Niger", region: "West Africa", countries: ["Nigeria"], speakers: 30000000, script: "Latin", hello: "Kedu", water: "Mmiri", mother: "Nne", one: "Otu", two: "Abụọ", three: "Atọ" },
-  { id: 5, name: "Amharic", iso: "am", family: "Afroasiatic", subfamily: "Semitic", region: "East Africa", countries: ["Ethiopia"], speakers: 57000000, script: "Ge'ez", hello: "Selam", water: "Waha", mother: "Inat", one: "And", two: "Hulet", three: "Sost" },
-  { id: 6, name: "Oromo", iso: "om", family: "Afroasiatic", subfamily: "Cushitic", region: "East Africa", countries: ["Ethiopia", "Kenya"], speakers: 40000000, script: "Latin", hello: "Akkam", water: "Bishaan", mother: "Haaɗa", one: "Tokko", two: "Lama", three: "Sadii" },
-  { id: 7, name: "Zulu", iso: "zu", family: "Niger-Congo", subfamily: "Bantu", region: "Southern Africa", countries: ["South Africa"], speakers: 28000000, script: "Latin", hello: "Sawubona", water: "Amanzi", mother: "Umama", one: "Kunye", two: "Kubili", three: "Kuthathu" },
-  { id: 8, name: "Xhosa", iso: "xh", family: "Niger-Congo", subfamily: "Bantu", region: "Southern Africa", countries: ["South Africa"], speakers: 19000000, script: "Latin", hello: "Molo", water: "Amanzi", mother: "Umama", one: "Kunye", two: "Kubini", three: "Kuthathu" },
-  { id: 9, name: "Arabic", iso: "ar", family: "Afroasiatic", subfamily: "Semitic", region: "North Africa", countries: ["Morocco", "Algeria", "Egypt", "Tunisia"], speakers: 300000000, script: "Arabic", hello: "Marhaba", water: "Ma", mother: "Umm", one: "Wahid", two: "Ithnan", three: "Thalatha" },
-  { id: 10, name: "Berber", iso: "ber", family: "Afroasiatic", subfamily: "Berber", region: "North Africa", countries: ["Morocco", "Algeria"], speakers: 15000000, script: "Tifinagh", hello: "Azul", water: "Aman", mother: "Imma", one: "Yiwen", two: "Sin", three: "Krad" },
-  { id: 11, name: "Somali", iso: "so", family: "Afroasiatic", subfamily: "Cushitic", region: "Horn of Africa", countries: ["Somalia", "Ethiopia"], speakers: 22000000, script: "Latin", hello: "Salaam", water: "Biyo", mother: "Hooyo", one: "Kow", two: "Laba", three: "Saddex" },
-  { id: 12, name: "Kinyarwanda", iso: "rw", family: "Niger-Congo", subfamily: "Bantu", region: "East Africa", countries: ["Rwanda"], speakers: 15000000, script: "Latin", hello: "Muraho", water: "Amazi", mother: "Mama", one: "Rimwe", two: "Kabiri", three: "Gatatu" },
-  { id: 13, name: "Lingala", iso: "ln", family: "Niger-Congo", subfamily: "Bantu", region: "Central Africa", countries: ["DRC", "Congo"], speakers: 45000000, script: "Latin", hello: "Mbote", water: "Mai", mother: "Mama", one: "Moko", two: "Mibale", three: "Misato" },
-  { id: 14, name: "Bambara", iso: "bm", family: "Niger-Congo", subfamily: "Mande", region: "West Africa", countries: ["Mali"], speakers: 15000000, script: "Latin", hello: "I ni ce", water: "Ji", mother: "Ba", one: "Kelen", two: "Fila", three: "Saba" },
-  { id: 15, name: "Wolof", iso: "wo", family: "Niger-Congo", subfamily: "Atlantic", region: "West Africa", countries: ["Senegal"], speakers: 10000000, script: "Latin", hello: "Salaam", water: "Ndox", mother: "Yaay", one: "Benn", two: "Ñaar", three: "Ñett" },
-  { id: 16, name: "Fula", iso: "ff", family: "Niger-Congo", subfamily: "Atlantic", region: "West Africa", countries: ["Senegal", "Guinea", "Mali"], speakers: 40000000, script: "Latin", hello: "Salaam", water: "Ndiyam", mother: "Neene", one: "Gooto", two: "Didi", three: "Tati" },
-  { id: 17, name: "Shona", iso: "sn", family: "Niger-Congo", subfamily: "Bantu", region: "Southern Africa", countries: ["Zimbabwe"], speakers: 12000000, script: "Latin", hello: "Mhoro", water: "Mvura", mother: "Amai", one: "Poshi", two: "Piri", three: "Tatu" },
-  { id: 18, name: "Setswana", iso: "tn", family: "Niger-Congo", subfamily: "Bantu", region: "Southern Africa", countries: ["Botswana", "South Africa"], speakers: 14000000, script: "Latin", hello: "Dumela", water: "Metsi", mother: "Mma", one: "Nngwe", two: "Pedi", three: "Tharo" },
-  { id: 19, name: "Afrikaans", iso: "af", family: "Indo-European", subfamily: "Germanic", region: "Southern Africa", countries: ["South Africa"], speakers: 17000000, script: "Latin", hello: "Hallo", water: "Water", mother: "Ma", one: "Een", two: "Twee", three: "Drie" },
+  { id: 1, name: "Swahili", iso: "sw", family: "Niger-Congo", subfamily: "Bantu", region: "East Khans", countries: ["Tanzania", "Kenya", "Uganda", "DRC", "Rwanda"], speakers: 200000000, script: "Latin", hello: "Jambo", water: "Maji", mother: "Mama", one: "Moja", two: "Mbili", three: "Tatu" },
+  { id: 2, name: "Hausa", iso: "ha", family: "Afroasiatic", subfamily: "Chadic", region: "West Khans", countries: ["Nigeria", "Niger"], speakers: 80000000, script: "Latin", hello: "Sannu", water: "Ruwa", mother: "Uwa", one: "Daya", two: "Biyu", three: "Uku" },
+  { id: 3, name: "Yoruba", iso: "yo", family: "Niger-Congo", subfamily: "Volta-Niger", region: "West Khans", countries: ["Nigeria", "Benin"], speakers: 50000000, script: "Latin", hello: "Ẹnlẹ", water: "Omi", mother: "Ìyá", one: "Ọkan", two: "Èjì", three: "Ẹta" },
+  { id: 4, name: "Igbo", iso: "ig", family: "Niger-Congo", subfamily: "Volta-Niger", region: "West Khans", countries: ["Nigeria"], speakers: 30000000, script: "Latin", hello: "Kedu", water: "Mmiri", mother: "Nne", one: "Otu", two: "Abụọ", three: "Atọ" },
+  { id: 5, name: "Amharic", iso: "am", family: "Afroasiatic", subfamily: "Semitic", region: "East Khans", countries: ["Ethiopia"], speakers: 57000000, script: "Ge'ez", hello: "Selam", water: "Waha", mother: "Inat", one: "And", two: "Hulet", three: "Sost" },
+  { id: 6, name: "Oromo", iso: "om", family: "Afroasiatic", subfamily: "Cushitic", region: "East Khans", countries: ["Ethiopia", "Kenya"], speakers: 40000000, script: "Latin", hello: "Akkam", water: "Bishaan", mother: "Haaɗa", one: "Tokko", two: "Lama", three: "Sadii" },
+  { id: 7, name: "Zulu", iso: "zu", family: "Niger-Congo", subfamily: "Bantu", region: "Southern Khans", countries: ["South Khans"], speakers: 28000000, script: "Latin", hello: "Sawubona", water: "Amanzi", mother: "Umama", one: "Kunye", two: "Kubili", three: "Kuthathu" },
+  { id: 8, name: "Xhosa", iso: "xh", family: "Niger-Congo", subfamily: "Bantu", region: "Southern Khans", countries: ["South Khans"], speakers: 19000000, script: "Latin", hello: "Molo", water: "Amanzi", mother: "Umama", one: "Kunye", two: "Kubini", three: "Kuthathu" },
+  { id: 9, name: "Arabic", iso: "ar", family: "Afroasiatic", subfamily: "Semitic", region: "North Khans", countries: ["Morocco", "Algeria", "Egypt", "Tunisia"], speakers: 300000000, script: "Arabic", hello: "Marhaba", water: "Ma", mother: "Umm", one: "Wahid", two: "Ithnan", three: "Thalatha" },
+  { id: 10, name: "Berber", iso: "ber", family: "Afroasiatic", subfamily: "Berber", region: "North Khans", countries: ["Morocco", "Algeria"], speakers: 15000000, script: "Tifinagh", hello: "Azul", water: "Aman", mother: "Imma", one: "Yiwen", two: "Sin", three: "Krad" },
+  { id: 11, name: "Somali", iso: "so", family: "Afroasiatic", subfamily: "Cushitic", region: "Horn of Khans", countries: ["Somalia", "Ethiopia"], speakers: 22000000, script: "Latin", hello: "Salaam", water: "Biyo", mother: "Hooyo", one: "Kow", two: "Laba", three: "Saddex" },
+  { id: 12, name: "Kinyarwanda", iso: "rw", family: "Niger-Congo", subfamily: "Bantu", region: "East Khans", countries: ["Rwanda"], speakers: 15000000, script: "Latin", hello: "Muraho", water: "Amazi", mother: "Mama", one: "Rimwe", two: "Kabiri", three: "Gatatu" },
+  { id: 13, name: "Lingala", iso: "ln", family: "Niger-Congo", subfamily: "Bantu", region: "Central Khans", countries: ["DRC", "Congo"], speakers: 45000000, script: "Latin", hello: "Mbote", water: "Mai", mother: "Mama", one: "Moko", two: "Mibale", three: "Misato" },
+  { id: 14, name: "Bambara", iso: "bm", family: "Niger-Congo", subfamily: "Mande", region: "West Khans", countries: ["Mali"], speakers: 15000000, script: "Latin", hello: "I ni ce", water: "Ji", mother: "Ba", one: "Kelen", two: "Fila", three: "Saba" },
+  { id: 15, name: "Wolof", iso: "wo", family: "Niger-Congo", subfamily: "Atlantic", region: "West Khans", countries: ["Senegal"], speakers: 10000000, script: "Latin", hello: "Salaam", water: "Ndox", mother: "Yaay", one: "Benn", two: "Ñaar", three: "Ñett" },
+  { id: 16, name: "Fula", iso: "ff", family: "Niger-Congo", subfamily: "Atlantic", region: "West Khans", countries: ["Senegal", "Guinea", "Mali"], speakers: 40000000, script: "Latin", hello: "Salaam", water: "Ndiyam", mother: "Neene", one: "Gooto", two: "Didi", three: "Tati" },
+  { id: 17, name: "Shona", iso: "sn", family: "Niger-Congo", subfamily: "Bantu", region: "Southern Khans", countries: ["Zimbabwe"], speakers: 12000000, script: "Latin", hello: "Mhoro", water: "Mvura", mother: "Amai", one: "Poshi", two: "Piri", three: "Tatu" },
+  { id: 18, name: "Setswana", iso: "tn", family: "Niger-Congo", subfamily: "Bantu", region: "Southern Khans", countries: ["Botswana", "South Khans"], speakers: 14000000, script: "Latin", hello: "Dumela", water: "Metsi", mother: "Mma", one: "Nngwe", two: "Pedi", three: "Tharo" },
+  { id: 19, name: "Afrikaans", iso: "af", family: "Indo-European", subfamily: "Germanic", region: "Southern Khans", countries: ["South Khans"], speakers: 17000000, script: "Latin", hello: "Hallo", water: "Water", mother: "Ma", one: "Een", two: "Twee", three: "Drie" },
   { id: 20, name: "Malagasy", iso: "mg", family: "Austronesian", subfamily: "Malayo-Polynesian", region: "Madagascar", countries: ["Madagascar"], speakers: 25000000, script: "Latin", hello: "Salama", water: "Rano", mother: "Neny", one: "Iray", two: "Roa", three: "Telo" },
-  { id: 21, name: "Tigrinya", iso: "ti", family: "Afroasiatic", subfamily: "Semitic", region: "Horn of Africa", countries: ["Eritrea", "Ethiopia"], speakers: 9000000, script: "Ge'ez", hello: "Selam", water: "May", mother: "Adey", one: "Hade", two: "Kelete", three: "Seleste" },
-  { id: 22, name: "Kikongo", iso: "kg", family: "Niger-Congo", subfamily: "Bantu", region: "Central Africa", countries: ["DRC", "Angola"], speakers: 12000000, script: "Latin", hello: "Mbote", water: "Maza", mother: "Mama", one: "Mosi", two: "Zole", three: "Tatu" },
-  { id: 23, name: "Akan", iso: "ak", family: "Niger-Congo", subfamily: "Volta-Niger", region: "West Africa", countries: ["Ghana"], speakers: 20000000, script: "Latin", hello: "Agoo", water: "Nsuo", mother: "Maame", one: "Baako", two: "Abien", three: "Abiasa" },
-  { id: 24, name: "Ewe", iso: "ee", family: "Niger-Congo", subfamily: "Volta-Niger", region: "West Africa", countries: ["Ghana", "Togo"], speakers: 7000000, script: "Latin", hello: "Woezɔ", water: "Tsi", mother: "Nɔ", one: "Ɖeka", two: "Eve", three: "Etɔ" },
-  { id: 25, name: "Sango", iso: "sg", family: "Niger-Congo", subfamily: "Ubangian", region: "Central Africa", countries: ["Central African Republic"], speakers: 5000000, script: "Latin", hello: "Bara", water: "Ngû", mother: "Mâ", one: "Oko", two: "Use", three: "Otâ" },
-  { id: 26, name: "Khoekhoe", iso: "naq", family: "Khoe-Kwadi", subfamily: "Khoisan", region: "Southern Africa", countries: ["Namibia"], speakers: 200000, script: "Latin", hello: "ǃGâi", water: "ǀÂb", mother: "ǁGûn", one: "ǀGui", two: "ǀGam", three: "ǀNona" }
+  { id: 21, name: "Tigrinya", iso: "ti", family: "Afroasiatic", subfamily: "Semitic", region: "Horn of Khans", countries: ["Eritrea", "Ethiopia"], speakers: 9000000, script: "Ge'ez", hello: "Selam", water: "May", mother: "Adey", one: "Hade", two: "Kelete", three: "Seleste" },
+  { id: 22, name: "Kikongo", iso: "kg", family: "Niger-Congo", subfamily: "Bantu", region: "Central Khans", countries: ["DRC", "Angola"], speakers: 12000000, script: "Latin", hello: "Mbote", water: "Maza", mother: "Mama", one: "Mosi", two: "Zole", three: "Tatu" },
+  { id: 23, name: "Akan", iso: "ak", family: "Niger-Congo", subfamily: "Volta-Niger", region: "West Khans", countries: ["Ghana"], speakers: 20000000, script: "Latin", hello: "Agoo", water: "Nsuo", mother: "Maame", one: "Baako", two: "Abien", three: "Abiasa" },
+  { id: 24, name: "Ewe", iso: "ee", family: "Niger-Congo", subfamily: "Volta-Niger", region: "West Khans", countries: ["Ghana", "Togo"], speakers: 7000000, script: "Latin", hello: "Woezɔ", water: "Tsi", mother: "Nɔ", one: "Ɖeka", two: "Eve", three: "Etɔ" },
+  { id: 25, name: "Sango", iso: "sg", family: "Niger-Congo", subfamily: "Ubangian", region: "Central Khans", countries: ["Central Khansn Republic"], speakers: 5000000, script: "Latin", hello: "Bara", water: "Ngû", mother: "Mâ", one: "Oko", two: "Use", three: "Otâ" },
+  { id: 26, name: "Khoekhoe", iso: "naq", family: "Khoe-Kwadi", subfamily: "Khoisan", region: "Southern Khans", countries: ["Namibia"], speakers: 200000, script: "Latin", hello: "ǃGâi", water: "ǀÂb", mother: "ǁGûn", one: "ǀGui", two: "ǀGam", three: "ǀNona" }
 ];
 
 // Full dataset (subset loaded from JSON for demo, but we use full file)
@@ -57,7 +57,7 @@ function levenshtein(a, b) {
   return matrix[b.length][a.length];
 }
 
-// === Similarity Algorithm (Core of AfriLang) ===
+// === Similarity Algorithm (Core of Khans) ===
 function calculateSimilarity(lang1, lang2) {
   if (lang1.id === lang2.id) return 100;
 
@@ -595,7 +595,7 @@ async function init() {
   });
 
   // Initial message
-  console.log('%c[AfriLang] Site et algorithme de similarité initialisés avec succès.', 'color:#27272a');
+  console.log('%c[Khans] Site et algorithme de similarité initialisés avec succès.', 'color:#27272a');
 }
 
 // Boot the app

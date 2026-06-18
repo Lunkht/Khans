@@ -1,4 +1,4 @@
-# AfriLang — Langues d'Afrique + Algorithme de Fusion Probabiliste (v2.0)
+# Khans — Langues d'Afrique + Algorithme de Fusion Probabiliste (v2.0)
 
 Site web complet pour explorer **toutes les langues d'Afrique** et surtout **créer de nouvelles langues par fusion probabiliste**.
 
