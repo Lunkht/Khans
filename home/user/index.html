@@ -432,66 +432,33 @@
         </div>
     </div>
 
-    <!-- NEW BUILDER: Propros Language Construction (v3.0) -->
-    <div id="propros-section" class="max-w-screen-2xl mx-auto px-4 sm:px-8 py-8 sm:py-12">
-        <div class="mb-6 sm:mb-8">
-            <div class="flex items-center gap-x-2 sm:gap-x-3 mb-2">
-                <div class="px-3 sm:px-4 py-1 bg-purple-900 text-purple-300 rounded-3xl text-xs sm:text-sm font-semibold flex items-center">
-                    <i class="fa-solid fa-flask mr-1.5 sm:mr-2"></i> ALGORITHME v3.0
+    <!-- PROPROS BUILDER (in-page, compact) -->
+    <div id="propros-section" class="max-w-screen-2xl mx-auto px-8 py-12 bg-zinc-900 border-y border-zinc-800">
+        <div class="mb-6">
+            <div class="flex items-center gap-x-3 mb-2">
+                <div class="px-4 py-1 bg-purple-900 text-purple-300 rounded-3xl text-sm font-semibold flex items-center">
+                    <i class="fa-solid fa-flask mr-2"></i> NEW BUILDER
                 </div>
-                <span class="text-purple-400 text-xs sm:text-sm font-medium">NEW BUILDER</span>
+                <span class="text-purple-400 text-sm">Algorithme v3.0</span>
             </div>
-            <h2 class="text-2xl sm:text-4xl font-bold tracking-tight">Construction Propros</h2>
-            <p class="text-sm sm:text-base lg:text-xl text-zinc-300 mt-2">
-                Algorithme de <strong>reconstruction comparative</strong> : fusionne toutes les langues des pays <strong>non anglophones</strong> et <strong>non arabophones</strong> pour construire une <strong>proto-langue propros</strong> par clusters cognatiques et vote positionnel.
+            <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">Construction Propros</h2>
+            <p class="text-sm sm:text-base text-zinc-400 mt-2 max-w-xl">
+                Reconstruction comparative depuis <strong>toutes les langues</strong> des pays non anglophones et non arabophones.
             </p>
-        </div>
-
-        <div class="flex flex-col lg:grid lg:grid-cols-12 gap-4 lg:gap-8">
-            <!-- Builder panel -->
-            <div class="lg:col-span-5 bg-zinc-950 border border-purple-800/40 rounded-3xl p-4 sm:p-6">
-                <div class="font-semibold mb-3 flex items-center gap-x-2">
-                    <i class="fa-solid fa-diagram-project text-purple-400"></i>
-                    <span class="text-sm sm:text-base">Mécanisme du Builder</span>
-                </div>
-
-                <div class="space-y-2 text-xs sm:text-sm">
-                    <div class="bg-zinc-900 rounded-2xl p-2.5 sm:p-3">
-                        <div class="text-purple-300 text-[10px] sm:text-xs font-medium mb-0.5 sm:mb-1">① Filtrage par pays</div>
-                        <div class="text-[11px] sm:text-xs text-zinc-400">Sont exclues les langues dont <strong>tous les pays</strong> sont anglophones ou arabophones.</div>
-                    </div>
-                    <div class="bg-zinc-900 rounded-2xl p-2.5 sm:p-3">
-                        <div class="text-purple-300 text-[10px] sm:text-xs font-medium mb-0.5 sm:mb-1">② Clusters cognatiques</div>
-                        <div class="text-[11px] sm:text-xs text-zinc-400">Mots groupés par similarité phonétique. Le plus grand cluster sert de base.</div>
-                    </div>
-                    <div class="bg-zinc-900 rounded-2xl p-2.5 sm:p-3">
-                        <div class="text-purple-300 text-[10px] sm:text-xs font-medium mb-0.5 sm:mb-1">③ Vote positionnel</div>
-                        <div class="text-[11px] sm:text-xs text-zinc-400">Caractère majoritaire à chaque position. Lissage phonétique final.</div>
-                    </div>
-                </div>
-
-                <div class="mt-3 sm:mt-4 flex flex-wrap items-center gap-2 sm:gap-3 text-[10px] sm:text-xs">
-                    <span class="text-zinc-400">Exclus :</span>
-                    <span class="px-2 py-0.5 bg-blue-900/50 text-blue-300 rounded-xl">Anglophone (23)</span>
-                    <span class="px-2 py-0.5 bg-amber-900/50 text-amber-300 rounded-xl">Arabophone (18)</span>
-                </div>
-
+            <div class="mt-4 flex flex-wrap items-center gap-2 text-xs">
+                <span class="px-2.5 py-1 bg-zinc-800 text-zinc-300 rounded-xl">23 pays anglophones exclus</span>
+                <span class="px-2.5 py-1 bg-zinc-800 text-zinc-300 rounded-xl">18 pays arabophones exclus</span>
                 <button onclick="performProprosBuild()"
-                        class="mt-4 sm:mt-5 w-full py-3 sm:py-3.5 bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-semibold rounded-3xl flex items-center justify-center gap-x-2 text-xs sm:text-sm transition-colors">
+                        class="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-3xl font-medium flex items-center gap-x-2">
                     <i class="fa-solid fa-flask"></i>
-                    <span>CONSTRUIRE LA LANGUE PROPROS</span>
+                    <span>Construire</span>
                 </button>
             </div>
-
-            <!-- Result panel -->
-            <div class="lg:col-span-7">
-                <div id="propros-result" class="bg-zinc-950 border border-purple-800/40 rounded-3xl p-4 sm:p-6 min-h-[200px] sm:min-h-[320px]">
-                    <div class="flex flex-col items-center justify-center text-center py-8 sm:py-0 sm:h-full">
-                        <i class="fa-solid fa-flask text-3xl sm:text-4xl mb-3 opacity-30 text-purple-400"></i>
-                        <div class="text-xs sm:text-sm text-zinc-400">Cliquez sur "Construire" pour lancer</div>
-                        <div class="text-[10px] sm:text-xs text-zinc-500 mt-1">Reconstruction comparative depuis les langues des pays non-anglophones / non-arabophones</div>
-                    </div>
-                </div>
+        </div>
+        <div id="propros-result" class="bg-zinc-950 border border-zinc-800 rounded-3xl p-6 min-h-[200px]">
+            <div class="flex flex-col items-center justify-center text-center h-full">
+                <i class="fa-solid fa-flask text-4xl mb-3 opacity-30 text-purple-400"></i>
+                <div class="text-sm text-zinc-400">Cliquez sur "Construire" pour générer la proto-langue propros</div>
             </div>
         </div>
     </div>
