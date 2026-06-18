@@ -484,7 +484,7 @@ function renderLanguages(langs = coreLanguages) {
 
   toShow.forEach(lang => {
     const card = document.createElement('div');
-    card.className = `lang-card bg-zinc-900 border border-zinc-800 hover:border-zinc-600 rounded-3xl p-4 cursor-pointer flex flex-col`;
+    card.className = `lang-card bg-zinc-900 border border-zinc-800 hover:border-zinc-600 rounded-3xl p-4 cursor-pointer flex flex-col min-w-0`;
     
     const speakerStr = lang.speakers ? 
       (lang.speakers >= 1000000 ? Math.round(lang.speakers/1000000) + 'M' : (lang.speakers/1000) + 'k') : '—';
@@ -493,12 +493,12 @@ function renderLanguages(langs = coreLanguages) {
     card.innerHTML = `
       <div class="flex justify-between items-start">
         <div>
-          <div class="font-semibold text-lg leading-tight flex items-center gap-x-1.5">
-            <span>${flag}</span> ${lang.name}
+          <div class="font-semibold text-lg leading-tight flex items-center gap-x-1.5 min-w-0">
+            <span class="shrink-0">${flag}</span> <span class="truncate">${lang.name}</span>
           </div>
-          <div class="flex items-center gap-x-2 mt-1">
-            <span class="font-mono text-xs text-zinc-400 bg-zinc-950 px-2 py-px rounded-xl">${lang.iso}</span>
-            <span class="text-[10px] px-1.5 py-px rounded-xl bg-zinc-800 text-zinc-400">${lang.family}</span>
+          <div class="flex items-center gap-x-2 mt-1 min-w-0">
+            <span class="font-mono text-xs text-zinc-400 bg-zinc-950 px-2 py-px rounded-xl shrink-0">${lang.iso}</span>
+            <span class="text-[10px] px-1.5 py-px rounded-xl bg-zinc-800 text-zinc-400 truncate">${lang.family}</span>
           </div>
         </div>
         <div class="text-right">
@@ -509,7 +509,7 @@ function renderLanguages(langs = coreLanguages) {
       <div class="mt-auto pt-4 flex items-center justify-between text-xs">
         <div class="flex items-center gap-x-1.5 text-zinc-400">
           <i class="fa-solid fa-globe text-xs"></i>
-          <span class="font-medium">${lang.region}</span>
+          <span class="font-medium truncate">${lang.region}</span>
         </div>
         
         <div onclick="event.stopImmediatePropagation(); showLanguageDetail(${lang.id});" 
