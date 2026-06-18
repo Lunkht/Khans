@@ -1317,10 +1317,38 @@ function isExcludedProprosCountry(country) {
 }
 
 function getProprosFoundation() {
-  return coreLanguages.filter(lang => {
-    const nonExcluded = lang.countries.filter(c => !isExcludedProprosCountry(c));
-    return nonExcluded.length > 0;
-  });
+  const fullCount = fullLanguages.length;
+  if (fullCount === 0) {
+    return { full: [], core: coreLanguages, totalFull: 0, totalCore: coreLanguages.length };
+  }
+
+  // Filter FULL dataset by country exclusion
+  const includedFull = fullLanguages.filter(e => !isExcludedProprosCountry(e.country));
+  const excludedFull = fullLanguages.filter(e => isExcludedProprosCountry(e.country));
+
+  // Unique languages from full dataset
+  const uniqueIncluded = [...new Map(includedFull.map(e => [e.name, e])).values()];
+  const uniqueExcluded = [...new Map(excludedFull.map(e => [e.name, e])).values()];
+
+  // Cross-reference with core 26 languages for word data
+  const coreIncluded = coreLanguages.filter(lang =>
+    lang.countries.some(c => !isExcludedProprosCountry(c))
+  );
+  const coreExcluded = coreLanguages.filter(lang =>
+    lang.countries.every(c => isExcludedProprosCountry(c))
+  );
+
+  return {
+    allIncluded: uniqueIncluded,
+    allExcluded: uniqueExcluded,
+    coreIncluded,
+    coreExcluded,
+    totalFull,
+    totalIncluded: uniqueIncluded.length,
+    totalExcluded: uniqueExcluded.length,
+    coreIncludedCount: coreIncluded.length,
+    coreExcludedCount: coreExcluded.length
+  };
 }
 
 function proprosWordBuild(words) {
@@ -1332,7 +1360,6 @@ function proprosWordBuild(words) {
   if (valid.length === 0) return "—";
   if (valid.length === 1) return valid[0].charAt(0).toUpperCase() + valid[0].slice(1);
 
-  // Cluster by phonetic similarity (cognate detection)
   const clusters = [];
   const used = new Set();
 
@@ -1340,55 +1367,40 @@ function proprosWordBuild(words) {
     if (used.has(i)) continue;
     const cluster = [valid[i]];
     used.add(i);
-
     for (let j = i + 1; j < valid.length; j++) {
       if (used.has(j)) continue;
       const isCognate = cluster.some(cw => {
         const dist = levenshtein(cw, valid[j]);
         return dist <= Math.max(2, Math.floor(Math.min(cw.length, valid[j].length) / 2));
       });
-      if (isCognate) {
-        cluster.push(valid[j]);
-        used.add(j);
-      }
+      if (isCognate) { cluster.push(valid[j]); used.add(j); }
     }
     clusters.push(cluster);
   }
 
   clusters.sort((a, b) => b.length - a.length);
   const bestCluster = clusters[0];
-
   let result;
 
   if (bestCluster.length >= 2) {
-    // RECONSTRUCTION: position-wise majority from cognate cluster
     const lengths = bestCluster.map(w => w.length).sort((a, b) => a - b);
     const medianLen = lengths[Math.floor(lengths.length / 2)];
-
     let proto = '';
     for (let pos = 0; pos < medianLen; pos++) {
       const freq = {};
-      bestCluster.forEach(w => {
-        if (pos < w.length) {
-          freq[w[pos]] = (freq[w[pos]] || 0) + 1;
-        }
-      });
-      let bestChar = '';
-      let bestCount = 0;
+      bestCluster.forEach(w => { if (pos < w.length) freq[w[pos]] = (freq[w[pos]] || 0) + 1; });
+      let bestChar = '', bestCount = 0;
       for (const [c, count] of Object.entries(freq)) {
         if (count > bestCount) { bestChar = c; bestCount = count; }
       }
       proto += bestChar;
     }
-
     proto = proto.replace(/([aeiouà-ü])\1+/gi, '$1');
     if (proto.length > 8) proto = proto.slice(0, 7);
     result = proto;
   } else {
-    // SELECTION: score-based from all valid words
     const lengths = valid.map(w => w.length).sort((a, b) => a - b);
     const medianLen = lengths[Math.floor(lengths.length / 2)];
-
     const scored = valid.map(w => {
       let score = 50;
       const lenDiff = Math.abs(w.length - medianLen);
@@ -1399,7 +1411,6 @@ function proprosWordBuild(words) {
       if (w.length <= 3) score += 10;
       return { word: w, score };
     });
-
     scored.sort((a, b) => b.score - a.score);
     result = scored[0].word;
   }
@@ -1409,44 +1420,33 @@ function proprosWordBuild(words) {
 
 function buildProprosLanguage() {
   const foundation = getProprosFoundation();
+  const coreIncluded = foundation.coreIncluded;
 
-  if (foundation.length < 2) {
-    return { error: "Pas assez de langues sources après filtrage des pays anglophones/arabophones." };
+  if (coreIncluded.length < 2) {
+    return { error: "Pas assez de langues sources après filtrage." };
   }
 
   const keys = ['hello', 'water', 'mother', 'one', 'two', 'three', 'sun', 'moon', 'fire', 'earth', 'man', 'woman', 'eat', 'sleep', 'big', 'good', 'house', 'tree', 'fish'];
 
-  // === PROPROS LEXICON CONSTRUCTION ===
+  // === LEXICON from core languages with word data ===
   const lexicon = {};
   keys.forEach(key => {
-    const langWords = foundation.map(l => l[key]).filter(Boolean);
+    const langWords = coreIncluded.map(l => l[key]).filter(Boolean);
     lexicon[key] = proprosWordBuild(langWords);
   });
 
   // === AGGREGATION ===
-  const regions = [...new Set(foundation.map(l => l.region))];
-  const families = [...new Set(foundation.map(l => l.family))];
-  const allCountries = [...new Set(foundation.flatMap(l => l.countries))];
-  const totalSpeakers = foundation.reduce((s, l) => s + (l.speakers || 0), 0);
-  const totalExcluded = coreLanguages.length - foundation.length;
+  const regions = [...new Set(coreIncluded.map(l => l.region))];
+  const families = [...new Set(coreIncluded.map(l => l.family))];
+  const allCountries = [...new Set(coreIncluded.flatMap(l => l.countries))];
+  const totalSpeakers = coreIncluded.reduce((s, l) => s + (l.speakers || 0), 0);
 
-  // === NAMING ===
+  // === NAMING using full dataset ===
   const regParts = [...new Set(regions.map(r => r.split(' ')[0].slice(0, 3)))].slice(0, 2).join('');
-  const famPrefix = families.length === 1
-    ? families[0].split('-')[0].slice(0, 4)
-    : "Pan";
+  const famPrefix = families.length === 1 ? families[0].split('-')[0].slice(0, 4) : "Pan";
   const langName = `Propros-${famPrefix}${regParts}`;
 
-  // === METRICS ===
-  const excludedLangs = coreLanguages
-    .filter(l => !foundation.includes(l))
-    .map(l => ({ id: l.id, name: l.name }));
-
-  const sourceDetails = foundation.map(l => ({
-    id: l.id,
-    name: l.name,
-    countries: l.countries
-  }));
+  const excludedNames = foundation.coreExcluded.map(l => l.name);
 
   const proprosLang = {
     id: "propros-" + Date.now(),
@@ -1460,30 +1460,129 @@ function buildProprosLanguage() {
     script: "Latin (proposé)",
     ...lexicon,
     _meta: {
-      sourceCount: foundation.length,
-      excludedCount: totalExcluded,
-      sourceLanguages: foundation.map(l => ({ id: l.id, name: l.name })),
-      excludedLanguages: excludedLangs,
-      excludedAnglophoneCountries: ANGLOPHONE_COUNTRIES,
-      excludedArabophoneCountries: ARABOPHONE_COUNTRIES,
+      fullDatasetTotal: foundation.totalFull,
+      fullDatasetIncluded: foundation.totalIncluded,
+      fullDatasetExcluded: foundation.totalExcluded,
+      sourceCount: coreIncluded.length,
+      excludedCount: foundation.coreExcluded.length,
+      sourceLanguages: coreIncluded.map(l => ({ id: l.id, name: l.name })),
+      excludedLanguages: foundation.coreExcluded.map(l => ({ id: l.id, name: l.name })),
       algorithm: "v3.0-propros-builder",
-      method: "cognate-clustering + position-wise majority reconstruction"
+      method: "full-dataset country filter + cognate clustering + position-wise reconstruction"
     }
   };
 
   return {
     language: proprosLang,
     foundation,
+    coreIncluded,
     metrics: {
-      sourceCount: foundation.length,
-      excludedCount: totalExcluded,
-      sourceNames: foundation.map(l => l.name),
-      excludedNames: excludedLangs.map(l => l.name),
+      fullTotal: foundation.totalFull,
+      fullIncluded: foundation.totalIncluded,
+      fullExcluded: foundation.totalExcluded,
+      coreIncluded: coreIncluded.length,
+      coreExcluded: foundation.coreExcluded.length,
+      sourceNames: coreIncluded.map(l => l.name),
+      excludedNames,
       regions,
       families,
       totalSpeakers
     }
   };
+}
+
+function performProprosBuild() {
+  const resultBox = document.getElementById('propros-result');
+  if (!resultBox) return;
+
+  if (!fullLanguages || fullLanguages.length === 0) {
+    resultBox.innerHTML = `<div class="text-center text-orange-300 py-8">⚠ Données complètes non chargées. Vérifiez le fichier data/languages_full.json.</div>`;
+    return;
+  }
+
+  resultBox.innerHTML = `<div class="text-center py-8 text-purple-300"><i class="fa-solid fa-flask fa-spin mr-2"></i> Analyse de ${fullLanguages.length} associations langue-pays...</div>`;
+
+  setTimeout(() => {
+    const buildResult = buildProprosLanguage();
+
+    if (buildResult.error) {
+      resultBox.innerHTML = `<div class="text-center text-orange-300 py-8">${buildResult.error}</div>`;
+      return;
+    }
+
+    const lang = buildResult.language;
+    const metrics = buildResult.metrics;
+
+    let lexiconHTML = '';
+    const keys = ['hello', 'water', 'mother', 'one', 'two', 'three', 'sun', 'moon', 'fire', 'earth', 'man', 'woman', 'eat', 'sleep', 'big', 'good', 'house', 'tree', 'fish'];
+    const labels = ['Bonjour', 'Eau', 'Mère', 'Un', 'Deux', 'Trois', 'Soleil', 'Lune', 'Feu', 'Terre', 'Homme', 'Femme', 'Manger', 'Dormir', 'Grand', 'Bon', 'Maison', 'Arbre', 'Poisson'];
+    keys.forEach((k, i) => {
+      lexiconHTML += `<div class="bg-zinc-800/50 rounded-xl px-3 py-2"><span class="text-purple-400 text-[10px] block">${labels[i]}</span><span class="font-medium text-sm">${lang[k] || '—'}</span></div>`;
+    });
+
+    const html = `
+      <div class="flex items-start justify-between gap-4 mb-4 flex-wrap">
+        <div class="min-w-0">
+          <div class="text-purple-300 text-sm font-medium flex items-center gap-2">
+            <i class="fa-solid fa-flask"></i> PROPROS LANGUE RECONSTRUITE
+          </div>
+          <div class="text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight break-words">${lang.name}</div>
+          <div class="font-mono text-xs mt-0.5 text-purple-400">${lang.iso} • ${lang.family}</div>
+        </div>
+        <div class="text-right shrink-0">
+          <div class="text-xs text-zinc-400">Associations analysées</div>
+          <div class="text-3xl sm:text-4xl lg:text-5xl font-bold text-purple-400">${metrics.fullTotal}<span class="text-xs sm:text-base align-super text-zinc-400"> entrées</span></div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4 text-xs">
+        <div class="bg-zinc-900 rounded-2xl p-3 text-center">
+          <span class="text-zinc-400">Inclus (full dataset)</span><br><span class="text-lg font-bold text-emerald-400">${metrics.fullIncluded}</span><br><span class="text-[10px] text-zinc-500">langues uniques</span>
+        </div>
+        <div class="bg-zinc-900 rounded-2xl p-3 text-center">
+          <span class="text-zinc-400">Exclus (full dataset)</span><br><span class="text-lg font-bold text-orange-400">${metrics.fullExcluded}</span><br><span class="text-[10px] text-zinc-500">langues uniques</span>
+        </div>
+        <div class="bg-zinc-900 rounded-2xl p-3 text-center">
+          <span class="text-zinc-400">Core avec lexique</span><br><span class="text-lg font-bold text-emerald-400">${metrics.coreIncluded}</span><br><span class="text-[10px] text-zinc-500">langues sources</span>
+        </div>
+        <div class="bg-zinc-900 rounded-2xl p-3 text-center">
+          <span class="text-zinc-400">Core exclues</span><br><span class="text-lg font-bold text-orange-400">${metrics.coreExcluded}</span><br><span class="text-[10px] text-zinc-500">sans données</span>
+        </div>
+      </div>
+
+      <div class="bg-zinc-900 border border-purple-800/40 rounded-2xl p-3 sm:p-4 mb-4">
+        <div class="text-[10px] sm:text-xs uppercase tracking-widest mb-2 text-purple-400/80">Lexique propros reconstruit (19 mots)</div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1.5 sm:gap-2">
+          ${lexiconHTML}
+        </div>
+      </div>
+
+      <div class="text-xs grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+        <div class="bg-zinc-900 rounded-2xl p-2.5 sm:p-3">
+          <div class="font-medium mb-1 text-xs">Langues sources (${metrics.coreIncluded})</div>
+          <div class="text-purple-300 text-[10px] sm:text-[11px] break-words">${metrics.sourceNames.join(', ')}</div>
+        </div>
+        <div class="bg-zinc-900 rounded-2xl p-2.5 sm:p-3">
+          <div class="font-medium mb-1 text-xs">Exclues (${metrics.coreExcluded})</div>
+          <div class="text-orange-300 text-[10px] sm:text-[11px] break-words">${metrics.excludedNames.length > 0 ? metrics.excludedNames.join(', ') : 'aucune'}</div>
+        </div>
+      </div>
+
+      <div class="mt-4 flex flex-col sm:flex-row gap-2">
+        <button onclick="addFusedLanguageToList('${lang.id}')"
+                class="w-full sm:flex-1 py-2.5 sm:py-2 text-xs bg-purple-600 hover:bg-purple-700 rounded-3xl font-medium">Ajouter au catalogue</button>
+        <button onclick="performProprosBuild()"
+                class="w-full sm:flex-1 py-2.5 sm:py-2 text-xs bg-zinc-800 hover:bg-zinc-700 rounded-3xl">🔄 Reconstruire</button>
+      </div>
+    `;
+
+    resultBox.innerHTML = html;
+    window.lastFusedLanguage = lang;
+
+    setTimeout(() => {
+      document.getElementById('propros-section').scrollIntoView({ behavior: 'smooth' });
+    }, 200);
+  }, 300);
 }
 
 function performProprosBuild() {
