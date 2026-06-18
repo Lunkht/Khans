@@ -133,6 +133,17 @@ const coreLanguages = [
     eat: "ǀÂu", sleep: "ǃGâi", big: "ǀGâi", good: "ǂÂi", house: "ǁÂu", tree: "ǀÂb", fish: "ǃGâi" }
 ];
 
+// Flag emojis for each language (based on primary country)
+const languageFlags = {
+  1: "🇹🇿", 2: "🇳🇬", 3: "🇳🇬", 4: "🇳🇬",
+  5: "🇪🇹", 6: "🇪🇹", 7: "🇿🇦", 8: "🇿🇦",
+  9: "🇪🇬", 10: "🇲🇦", 11: "🇸🇴", 12: "🇷🇼",
+  13: "🇨🇩", 14: "🇲🇱", 15: "🇸🇳", 16: "🇸🇳",
+  17: "🇿🇼", 18: "🇧🇼", 19: "🇿🇦", 20: "🇲🇬",
+  21: "🇪🇷", 22: "🇨🇩", 23: "🇬🇭", 24: "🇬🇭",
+  25: "🇨🇫", 26: "🇳🇦"
+};
+
 // Full dataset (subset loaded from JSON for demo, but we use full file)
 let fullLanguages = [];
 
@@ -473,17 +484,20 @@ function renderLanguages(langs = coreLanguages) {
 
   toShow.forEach(lang => {
     const card = document.createElement('div');
-    card.className = `lang-card bg-zinc-900 border border-zinc-800 hover:border-emerald-600/40 rounded-3xl p-4 cursor-pointer flex flex-col`;
+    card.className = `lang-card bg-zinc-900 border border-zinc-800 hover:border-zinc-600 rounded-3xl p-4 cursor-pointer flex flex-col`;
     
     const speakerStr = lang.speakers ? 
       (lang.speakers >= 1000000 ? Math.round(lang.speakers/1000000) + 'M' : (lang.speakers/1000) + 'k') : '—';
 
+    const flag = languageFlags[lang.id] || '🌍';
     card.innerHTML = `
       <div class="flex justify-between items-start">
         <div>
-          <div class="font-semibold text-lg leading-tight">${lang.name}</div>
+          <div class="font-semibold text-lg leading-tight flex items-center gap-x-1.5">
+            <span>${flag}</span> ${lang.name}
+          </div>
           <div class="flex items-center gap-x-2 mt-1">
-            <span class="font-mono text-xs text-emerald-300 bg-zinc-950 px-2 py-px rounded-xl">${lang.iso}</span>
+            <span class="font-mono text-xs text-zinc-400 bg-zinc-950 px-2 py-px rounded-xl">${lang.iso}</span>
             <span class="text-[10px] px-1.5 py-px rounded-xl bg-zinc-800 text-zinc-400">${lang.family}</span>
           </div>
         </div>
@@ -499,7 +513,7 @@ function renderLanguages(langs = coreLanguages) {
         </div>
         
         <div onclick="event.stopImmediatePropagation(); showLanguageDetail(${lang.id});" 
-             class="text-emerald-300 hover:text-white px-2 py-1 transition-colors text-xs flex items-center gap-x-1">
+             class="text-zinc-400 hover:text-white px-2 py-1 transition-colors text-xs flex items-center gap-x-1">
           <span>voir</span> <i class="fa-solid fa-arrow-right text-xs"></i>
         </div>
       </div>
@@ -654,10 +668,10 @@ function compareSelectedLanguages() {
 
   const score = calculateSimilarity(lang1, lang2);
 
-  let color = 'text-emerald-400';
+  let color = 'text-white';
   let label = 'Très proches';
-  if (score < 45) { color = 'text-amber-400'; label = 'Liens faibles'; }
-  else if (score < 65) { color = 'text-yellow-300'; label = 'Similitudes modérées'; }
+  if (score < 45) { color = 'text-zinc-400'; label = 'Liens faibles'; }
+  else if (score < 65) { color = 'text-zinc-300'; label = 'Similitudes modérées'; }
 
   const html = `
     <div class="flex justify-between items-center mb-2">
@@ -946,56 +960,169 @@ async function init() {
 let selectedForFusion = [];
 
 function populateFusionSelector() {
-  const container = document.getElementById('fusion-selector');
-  if (!container) return;
-  container.innerHTML = '';
+  const listContainer = document.getElementById('fusion-dropdown-list');
+  if (!listContainer) return;
+  listContainer.innerHTML = '';
 
   coreLanguages.forEach(lang => {
-    const div = document.createElement('div');
-    div.className = `flex items-center justify-between px-3 py-2 rounded-2xl hover:bg-zinc-900 cursor-pointer border border-transparent`;
+    const flag = languageFlags[lang.id] || '🌍';
+    const row = document.createElement('div');
+    row.className = `flex items-center justify-between px-3 py-[7px] rounded-xl hover:bg-zinc-800 active:bg-zinc-950 cursor-pointer text-sm`;
     
-    div.innerHTML = `
+    row.innerHTML = `
       <div class="flex items-center gap-x-3">
-        <input type="checkbox" id="fus-${lang.id}" class="accent-emerald-500 w-4 h-4">
-        <label for="fus-${lang.id}" class="font-medium cursor-pointer">${lang.name}</label>
-        <span class="text-[10px] font-mono text-emerald-400">${lang.iso}</span>
+        <input type="checkbox" id="fus-${lang.id}" class="accent-zinc-300 w-3.5 h-3.5 pointer-events-none">
+        <span class="text-lg leading-none">${flag}</span>
+        <label for="fus-${lang.id}" class="font-medium cursor-pointer text-zinc-200">${lang.name}</label>
+        <span class="text-[10px] font-mono text-zinc-500">${lang.iso}</span>
       </div>
-      <span class="text-xs text-zinc-400">${lang.family.split(' ')[0]}</span>
+      <span class="text-xs text-zinc-500">${lang.family.split(' ')[0]}</span>
     `;
 
-    const checkbox = div.querySelector('input');
-    checkbox.onchange = () => {
-      if (checkbox.checked) {
-        if (!selectedForFusion.includes(lang.id)) selectedForFusion.push(lang.id);
-      } else {
-        selectedForFusion = selectedForFusion.filter(id => id !== lang.id);
-      }
-      // limit to 4
-      if (selectedForFusion.length > 4) {
-        const last = selectedForFusion.pop();
-        document.getElementById('fus-' + last).checked = false;
-      }
+    const checkbox = row.querySelector('input');
+    
+    // Click on row toggles checkbox
+    row.onclick = (e) => {
+      if (e.target.tagName === 'INPUT') return;
+      checkbox.checked = !checkbox.checked;
+      handleFusionCheckboxChange(checkbox, lang.id);
     };
 
-    container.appendChild(div);
+    checkbox.onchange = () => {
+      handleFusionCheckboxChange(checkbox, lang.id);
+    };
+
+    listContainer.appendChild(row);
   });
+
+  // Initial sync of UI
+  updateFusionSelectedUI();
+}
+
+function handleFusionCheckboxChange(checkbox, langId) {
+  if (checkbox.checked) {
+    if (!selectedForFusion.includes(langId)) {
+      selectedForFusion.push(langId);
+    }
+  } else {
+    selectedForFusion = selectedForFusion.filter(id => id !== langId);
+  }
+
+  // Enforce max 4
+  if (selectedForFusion.length > 4) {
+    const last = selectedForFusion.pop();
+    const lastCb = document.getElementById('fus-' + last);
+    if (lastCb) lastCb.checked = false;
+  }
+
+  updateFusionSelectedUI();
+}
+
+function updateFusionSelectedUI() {
+  // Update dropdown label
+  const label = document.getElementById('fusion-dropdown-label');
+  const pillsContainer = document.getElementById('fusion-selected-pills');
+  const chevron = document.getElementById('fusion-chevron');
+
+  if (!label || !pillsContainer) return;
+
+  const selectedLangs = coreLanguages.filter(l => selectedForFusion.includes(l.id));
+
+  if (selectedLangs.length === 0) {
+    label.textContent = 'Sélectionner 2 à 4 langues...';
+    label.classList.add('text-zinc-300');
+    label.classList.remove('text-white');
+  } else {
+    label.innerHTML = `${selectedLangs.length} sélectionnée${selectedLangs.length > 1 ? 's' : ''} <span class="text-zinc-500 text-xs">(${selectedLangs.map(l => l.name.split(' ')[0]).join(', ')})</span>`;
+    label.classList.remove('text-zinc-300');
+    label.classList.add('text-white');
+  }
+
+  // Pills
+  pillsContainer.innerHTML = '';
+  selectedLangs.forEach(lang => {
+    const flag = languageFlags[lang.id] || '🌍';
+    const pill = document.createElement('div');
+    pill.className = `inline-flex items-center gap-x-1.5 px-2.5 py-1 bg-zinc-800 border border-zinc-700 rounded-2xl text-xs`;
+    pill.innerHTML = `
+      <span>${flag}</span>
+      <span class="font-medium">${lang.name}</span>
+      <button onclick="removeFromFusionSelection(${lang.id}); event.stopImmediatePropagation();" 
+              class="ml-0.5 text-zinc-400 hover:text-white w-3 h-3 flex items-center justify-center">×</button>
+    `;
+    pillsContainer.appendChild(pill);
+  });
+}
+
+function toggleFusionDropdown(e) {
+  if (e) e.stopImmediatePropagation();
+  const list = document.getElementById('fusion-dropdown-list');
+  const chevron = document.getElementById('fusion-chevron');
+  if (!list) return;
+
+  const isHidden = list.classList.contains('hidden');
+  
+  // Close all other dropdowns if needed (simple)
+  document.querySelectorAll('#fusion-dropdown-list').forEach(el => {
+    if (el !== list) el.classList.add('hidden');
+  });
+
+  if (isHidden) {
+    list.classList.remove('hidden');
+    list.classList.add('block');
+    if (chevron) chevron.style.transform = 'rotate(180deg)';
+  } else {
+    list.classList.add('hidden');
+    list.classList.remove('block');
+    if (chevron) chevron.style.transform = '';
+  }
+
+  // Close on outside click
+  const closeOnOutside = (ev) => {
+    if (!list.contains(ev.target) && ev.target.id !== 'fusion-dropdown-btn') {
+      list.classList.add('hidden');
+      list.classList.remove('block');
+      if (chevron) chevron.style.transform = '';
+      document.removeEventListener('click', closeOnOutside);
+    }
+  };
+  setTimeout(() => {
+    document.addEventListener('click', closeOnOutside, { once: true });
+  }, 10);
+}
+
+function removeFromFusionSelection(langId) {
+  selectedForFusion = selectedForFusion.filter(id => id !== langId);
+  const cb = document.getElementById('fus-' + langId);
+  if (cb) cb.checked = false;
+  updateFusionSelectedUI();
 }
 
 function selectAllForFusion() {
   selectedForFusion = [];
-  const checkboxes = document.querySelectorAll('#fusion-selector input');
+  const list = document.getElementById('fusion-dropdown-list');
+  if (!list) return;
+
+  const checkboxes = list.querySelectorAll('input[type="checkbox"]');
   checkboxes.forEach((cb, i) => {
-    if (i < 4) { // max 4
+    if (i < 4) {
       cb.checked = true;
       const id = parseInt(cb.id.replace('fus-', ''));
-      selectedForFusion.push(id);
+      if (!selectedForFusion.includes(id)) selectedForFusion.push(id);
+    } else {
+      cb.checked = false;
     }
   });
+  updateFusionSelectedUI();
 }
 
 function clearFusionSelection() {
   selectedForFusion = [];
-  document.querySelectorAll('#fusion-selector input').forEach(cb => cb.checked = false);
+  const list = document.getElementById('fusion-dropdown-list');
+  if (list) {
+    list.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+  }
+  updateFusionSelectedUI();
 }
 
 function performFusion() {
@@ -1006,7 +1133,7 @@ function performFusion() {
 
   if (selectedLangs.length < 2) {
     resultBox.innerHTML = `
-      <div class="text-center text-amber-400 py-8">
+      <div class="text-center text-zinc-400 py-8">
         <i class="fa-solid fa-exclamation-triangle text-2xl mb-2"></i><br>
         Veuillez sélectionner au moins <strong>2 langues</strong>.
       </div>`;

@@ -112,16 +112,16 @@
                     <a href="#donnees" class="nav-link font-medium px-3 py-1.5">Données</a>
                 </div>
 
-                <div class="flex items-center gap-x-3">
+                <div class="flex items-center gap-x-2 sm:gap-x-3">
                     <div class="hidden sm:flex items-center bg-zinc-900 border border-zinc-800 rounded-3xl px-1.5 py-1 text-sm">
                         <div class="flex items-center px-3">
-                            <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
-                            <span class="ml-2 text-emerald-400 text-xs font-semibold">2,646 langues</span>
+                            <div class="w-2 h-2 bg-zinc-400 rounded-full animate-pulse"></div>
+                            <span class="ml-2 text-zinc-400 text-xs font-semibold">2,646 langues</span>
                         </div>
                     </div>
                     
                     <button onclick="showAddLanguageModal()"
-                            class="flex items-center gap-x-2 px-4 py-2 text-sm font-medium bg-white text-zinc-900 hover:bg-zinc-100 transition-colors rounded-3xl">
+                            class="flex items-center gap-x-2 px-3 sm:px-4 py-2 text-sm font-medium bg-white text-zinc-900 hover:bg-zinc-100 active:bg-zinc-200 transition-colors rounded-3xl">
                         <i class="fa-solid fa-plus text-xs"></i>
                         <span class="hidden sm:inline">Ajouter</span>
                     </button>
@@ -133,13 +133,13 @@
     <!-- Hero -->
     <div class="max-w-screen-2xl mx-auto px-8 pt-10 pb-8">
         <div class="max-w-2xl">
-            <div class="inline-flex items-center px-4 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-medium mb-4">
-                <i class="fa-solid fa-earth-africa mr-2 text-emerald-400"></i>
+                    <div class="inline-flex items-center px-4 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-medium mb-4">
+                <i class="fa-solid fa-earth-africa mr-2 text-zinc-400"></i>
                 <span>Projet open source • 2026</span>
             </div>
             
-            <h1 class="text-6xl leading-[1.05] tracking-tighter font-bold title-font">
-                Le patrimoine<br>linguistique<br>de l'<span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">Afrique</span>
+            <h1 class="text-4xl sm:text-5xl md:text-6xl leading-[1.05] tracking-tighter font-bold title-font">
+                Le patrimoine<br>linguistique<br>de l'<span class="bg-gradient-to-r from-zinc-400 to-zinc-200 bg-clip-text text-transparent">Afrique</span>
             </h1>
             <p class="mt-5 text-xl text-zinc-400 max-w-md">
                 Regroupons, explorons et analysons les similitudes entre les plus de 2 000 langues d'Afrique.
@@ -209,44 +209,48 @@
 
     <!-- Explorer Section -->
     <div id="explorer" class="max-w-screen-2xl mx-auto px-8 pt-6 pb-12">
-        <div class="flex items-end justify-between mb-6">
-            <div>
-                <h2 class="text-3xl font-bold tracking-tight">Explorer les langues</h2>
-                <p class="text-zinc-400">Filtrez par famille, région ou recherchez par nom</p>
-            </div>
-            
-            <div class="flex items-center gap-2">
-                <div class="relative">
-                    <input id="search-input" 
-                           onkeyup="filterLanguages()"
-                           type="text" 
-                           placeholder="Rechercher une langue..." 
-                           class="w-80 bg-zinc-900 border border-zinc-800 focus:border-emerald-600 outline-none text-sm rounded-3xl py-2.5 pl-10 pr-4">
-                    <i class="fa-solid fa-search absolute left-4 top-3 text-zinc-500"></i>
+        <div class="mb-6">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mb-4">
+                <div>
+                    <h2 class="text-3xl font-bold tracking-tight">Explorer les langues</h2>
+                    <p class="text-zinc-400">Filtrez par famille, région ou recherchez par nom</p>
                 </div>
                 
-                <select id="family-filter" onchange="filterLanguages()" 
-                        class="bg-zinc-900 border border-zinc-800 text-sm rounded-3xl px-4 py-[9px] outline-none">
-                    <option value="">Toutes familles</option>
-                    <option value="Niger-Congo">Niger-Congo</option>
-                    <option value="Afroasiatic">Afroasiatic</option>
-                    <option value="Nilo-Saharan">Nilo-Saharan</option>
-                    <option value="Khoe-Kwadi">Khoe-Kwadi</option>
-                    <option value="Austronesian">Austronesian</option>
-                    <option value="Indo-European">Indo-European</option>
-                </select>
-                
-                <select id="region-filter" onchange="filterLanguages()" 
-                        class="bg-zinc-900 border border-zinc-800 text-sm rounded-3xl px-4 py-[9px] outline-none">
-                    <option value="">Toutes régions</option>
-                    <option value="West Africa">Afrique de l'Ouest</option>
-                    <option value="East Africa">Afrique de l'Est</option>
-                    <option value="North Africa">Afrique du Nord</option>
-                    <option value="Southern Africa">Afrique australe</option>
-                    <option value="Central Africa">Afrique centrale</option>
-                    <option value="Horn of Africa">Corne de l'Afrique</option>
-                    <option value="Madagascar">Madagascar</option>
-                </select>
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full md:w-auto">
+                    <div class="relative flex-1 sm:w-72 md:w-80">
+                        <input id="search-input" 
+                               onkeyup="filterLanguages()"
+                               type="text" 
+                               placeholder="Rechercher une langue..." 
+                               class="w-full bg-zinc-900 border border-zinc-800 focus:border-zinc-600 outline-none text-sm rounded-3xl py-2.5 pl-10 pr-4">
+                        <i class="fa-solid fa-search absolute left-4 top-3 text-zinc-500"></i>
+                    </div>
+                    
+                    <div class="flex gap-2 flex-1 sm:flex-none">
+                        <select id="family-filter" onchange="filterLanguages()" 
+                                class="flex-1 sm:flex-none bg-zinc-900 border border-zinc-800 text-sm rounded-3xl px-4 py-2 outline-none">
+                            <option value="">Toutes familles</option>
+                            <option value="Niger-Congo">Niger-Congo</option>
+                            <option value="Afroasiatic">Afroasiatic</option>
+                            <option value="Nilo-Saharan">Nilo-Saharan</option>
+                            <option value="Khoe-Kwadi">Khoe-Kwadi</option>
+                            <option value="Austronesian">Austronesian</option>
+                            <option value="Indo-European">Indo-European</option>
+                        </select>
+                        
+                        <select id="region-filter" onchange="filterLanguages()" 
+                                class="flex-1 sm:flex-none bg-zinc-900 border border-zinc-800 text-sm rounded-3xl px-4 py-2 outline-none">
+                            <option value="">Toutes régions</option>
+                            <option value="West Africa">Afrique de l'Ouest</option>
+                            <option value="East Africa">Afrique de l'Est</option>
+                            <option value="North Africa">Afrique du Nord</option>
+                            <option value="Southern Africa">Afrique australe</option>
+                            <option value="Central Africa">Afrique centrale</option>
+                            <option value="Horn of Africa">Corne de l'Afrique</option>
+                            <option value="Madagascar">Madagascar</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -296,16 +300,16 @@
                 <div class="lg:col-span-5 bg-zinc-950 border border-zinc-800 rounded-3xl p-6">
                     <div class="font-semibold mb-4">Comparer deux langues</div>
                     
-                    <div class="grid grid-cols-5 gap-3 items-center">
-                        <div class="col-span-2">
+                    <div class="grid grid-cols-1 sm:grid-cols-5 gap-3 items-center">
+                        <div class="col-span-1 sm:col-span-2">
                             <select id="compare-lang1" class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-3 py-2 text-sm" onchange="compareSelectedLanguages()">
                                 <!-- populated by JS -->
                             </select>
                         </div>
-                        <div class="text-center text-xs text-zinc-500 col-span-1">
+                        <div class="hidden sm:flex text-center text-xs text-zinc-500 col-span-1 items-center justify-center">
                             <i class="fa-solid fa-arrows-alt-h"></i>
                         </div>
-                        <div class="col-span-2">
+                        <div class="col-span-1 sm:col-span-2">
                             <select id="compare-lang2" class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-3 py-2 text-sm" onchange="compareSelectedLanguages()">
                                 <!-- populated by JS -->
                             </select>
@@ -383,19 +387,36 @@
                     <span>Sélectionnez 2 à 4 langues à fusionner</span>
                 </div>
                 
-                <div id="fusion-selector" class="space-y-2 max-h-[280px] overflow-auto pr-2 text-sm">
-                    <!-- Populated by JS with checkboxes -->
+                <!-- Dropdown list of languages with flags (mobile-friendly) -->
+                <div class="relative">
+                    <button type="button" id="fusion-dropdown-btn"
+                            onclick="toggleFusionDropdown(event)"
+                            class="w-full flex items-center justify-between px-4 py-3 bg-zinc-950 border border-zinc-700 hover:border-zinc-600 active:bg-zinc-900 rounded-2xl text-sm text-left transition-colors">
+                        <span id="fusion-dropdown-label" class="flex-1 truncate text-zinc-300">
+                            Sélectionner 2 à 4 langues...
+                        </span>
+                        <i class="fa-solid fa-chevron-down text-zinc-400 ml-2 transition-transform" id="fusion-chevron"></i>
+                    </button>
+                    
+                    <div id="fusion-dropdown-list" 
+                         class="hidden absolute z-[60] mt-1 w-full bg-zinc-900 border border-zinc-700 rounded-2xl shadow-xl max-h-[280px] overflow-auto p-1 text-sm">
+                        <!-- Populated dynamically by JS with flags + checkboxes -->
+                    </div>
                 </div>
 
-                <div class="mt-4 flex gap-2">
+                <div class="mt-3 flex flex-wrap gap-1.5" id="fusion-selected-pills">
+                    <!-- Selected languages shown as pills here -->
+                </div>
+
+                <div class="mt-3 flex gap-2">
                     <button onclick="selectAllForFusion()" 
-                            class="flex-1 text-xs py-2 bg-zinc-800 hover:bg-zinc-700 rounded-2xl">Tout sélectionner</button>
+                            class="flex-1 text-xs py-2 bg-zinc-800 hover:bg-zinc-700 active:bg-zinc-950 rounded-2xl transition-colors">Tout (max 4)</button>
                     <button onclick="clearFusionSelection()" 
-                            class="flex-1 text-xs py-2 bg-zinc-800 hover:bg-zinc-700 rounded-2xl">Effacer</button>
+                            class="flex-1 text-xs py-2 bg-zinc-800 hover:bg-zinc-700 active:bg-zinc-950 rounded-2xl transition-colors">Effacer</button>
                 </div>
 
                 <button onclick="performFusion()"
-                        class="mt-4 w-full py-3.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 font-semibold rounded-3xl flex items-center justify-center gap-x-2 text-sm">
+                        class="mt-4 w-full py-3.5 bg-white hover:bg-zinc-100 active:bg-zinc-200 text-zinc-950 font-semibold rounded-3xl flex items-center justify-center gap-x-2 text-sm transition-colors">
                     <i class="fa-solid fa-sync"></i>
                     <span>FUSIONNER MAINTENANT</span>
                 </button>

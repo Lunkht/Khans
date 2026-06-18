@@ -187,7 +187,7 @@ function filterLanguages() {
   const family = document.getElementById('family-filter').value;
   const region = document.getElementById('region-filter').value;
 
-  const filtezinc-400 = coreLanguages.filter(lang => {
+  const filtered = coreLanguages.filter(lang => {
     const matchSearch = !search || lang.name.toLowerCase().includes(search) || lang.iso.includes(search);
     const matchFamily = !family || lang.family === family;
     const matchRegion = !region || lang.region === region;
@@ -195,7 +195,7 @@ function filterLanguages() {
   });
 
   currentDisplayCount = 18;
-  renderLanguages(filtezinc-400);
+  renderLanguages(filtered);
 }
 
 function showMoreLanguages() {
@@ -204,9 +204,9 @@ function showMoreLanguages() {
   const family = document.getElementById('family-filter').value;
   const region = document.getElementById('region-filter').value;
 
-  let filtezinc-400 = coreLanguages;
+  let filtered = coreLanguages;
   if (search || family || region) {
-    filtezinc-400 = coreLanguages.filter(lang => {
+    filtered = coreLanguages.filter(lang => {
       const matchSearch = !search || lang.name.toLowerCase().includes(search);
       const matchFamily = !family || lang.family === family;
       const matchRegion = !region || lang.region === region;
@@ -214,7 +214,7 @@ function showMoreLanguages() {
     });
   }
 
-  renderLanguages(filtezinc-400);
+  renderLanguages(filtered);
 }
 
 // === LANGUAGE MODAL ===
