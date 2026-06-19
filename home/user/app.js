@@ -6,7 +6,8 @@ const languageFlags = {  1: "🇹🇿", 2: "🇳🇬", 3: "🇳🇬", 4: "🇳�
 let fullLanguages = []; let extendedLanguages = [];
 // === UTILITY: Levenshtein Distance ===
 function levenshtein(a, b) {  if (!a || !b) return 100;  a = a.toLowerCase().replace(/[^a-zà-ÿ]/g, '');  b = b.toLowerCase().replace(/[^a-zà-ÿ]/g, '');  if (a === b) return 0;
-    const matrix = [];  for (let i = 0; i <= b.length; i++) matrix[i] = [i];  for (let j = 0; j <= a.length; j++) matrix[0][j] = j;    for (let i = 1; i <= b.length; i++) {    for (let j = 1; j <= a.length; j++) {      const cost = a[j - 1] === b[i - 1] ? 0 : 1;      matrix[i][j] = Math.min(        matrix[i - 1][j] + 1,        matrix[i][j - 1] + 1,        matrix[i - 1][j - 1] + cost      );    }  }  return matrix[b.length][a.length];}
+    const matrix = [];  for (let i = 0; i <= b.length; i++) matrix[i] = [i];  for (let j = 0; j <= a.length; j++) matrix[0][j] = j;    for (let i = 1; i <= b.length; i++) {    for (let j = 1; j <= a.length; j++) {      const cost = a[j - 1] === b[i - 1] ? 0 : 1;      matrix[i][j] = Math.min(        matrix[i - 1][j] + 1,        matrix[i][j - 1] + 1,        matrix[i - 1][j - 1] + cost      );    }  }
+  return matrix[b.length][a.length];}
 // === Similarity Algorithm (Core of Khans) ===
 function calculateSimilarity(lang1, lang2) {  if (lang1.id === lang2.id) return 100;
   const keys = ['hello', 'water', 'mother', 'one', 'two', 'three', 'sun', 'moon', 'fire', 'earth', 'man', 'woman', 'eat', 'sleep', 'big', 'good', 'house', 'tree', 'fish'];
@@ -26,7 +27,8 @@ function calculateSimilarity(lang1, lang2) {  if (lang1.id === lang2.id) return 
   // Final score (capped)
   let score = Math.min(100, Math.round(avgLexSim * 0.7 + familyBonus + regionBonus));
   // Adjust for very close languages
-  if (lang1.family === lang2.family && score < 45) score = Math.max(score, 48);  return Math.max(0, Math.min(100, score));}
+  if (lang1.family === lang2.family && score < 45) score = Math.max(score, 48);
+  return Math.max(0, Math.min(100, score));}
 // =====================================================// === NEW: PROBABILITY + FUSION ALGORITHM (User Priority) ===// =====================================================/** * Calculate the PROBABILITY that two (or more) languages can be successfully fused. * Returns a probabilistic model instead of a deterministic score. */
 function calculateFusionProbability(languages) {  if (!languages || languages.length < 2) return { probability: 0, confidence: 0, details: {} };
   let totalScore = 0;
@@ -54,8 +56,10 @@ function calculateFusionProbability(languages) {  if (!languages || languages.le
   let probability = Math.max(5, Math.min(96, Math.round(baseProb * 100)));
   // Confidence (how reliable is this probability?)
   let dataQuality = Math.min(1, (pairCount * 0.4) + (avgLexOverlap / 80));
-  let confidence = Math.round(dataQuality * 85 + (familyCoherence * 15));  return {    probability,    confidence: Math.min(95, confidence),    avgSimilarity: Math.round(avgSim),    familyCoherence: Math.round(familyCoherence * 100),    lexOverlap: Math.round(avgLexOverlap),    numPairs: pairCount,    details: {      base: Math.round(baseProb * 100),      familyBoost: Math.round(familyCoherence * 22),      regionBoost: Math.round(regionCoherence * 12)    }  };}
-/** * Probabilistic word fusion + smarter hybridization (African phonetic bias) */function probabilisticWordFusion(words, languages) {  if (words.length === 0) return "—";  if (words.length === 1) return words[0];
+  let confidence = Math.round(dataQuality * 85 + (familyCoherence * 15));
+  return {    probability,    confidence: Math.min(95, confidence),    avgSimilarity: Math.round(avgSim),    familyCoherence: Math.round(familyCoherence * 100),    lexOverlap: Math.round(avgLexOverlap),    numPairs: pairCount,    details: {      base: Math.round(baseProb * 100),      familyBoost: Math.round(familyCoherence * 22),      regionBoost: Math.round(regionCoherence * 12)    }  };}
+/** * Probabilistic word fusion + smarter hybridization (African phonetic bias) */
+function probabilisticWordFusion(words, languages) {  if (words.length === 0) return "—";  if (words.length === 1) return words[0];
   const validWords = words.filter(w => w && w.trim());  if (validWords.length === 0) return "—";  if (validWords.length === 1) return validWords[0];
   const unique = [...new Set(validWords.map(w => w.toLowerCase()))];  if (unique.length === 1) return validWords[0];
   const avgLen = validWords.reduce((a, b) => a + b.length, 0) / validWords.length;
@@ -80,31 +84,40 @@ function calculateFusionProbability(languages) {  if (!languages || languages.le
     const w2 = validWords[1] || validWords[0];
         // Smart hybrid strategies
         let hybrid = "";    if (w1.length > 2 && w2.length > 2) {      const mid1 = Math.ceil(w1.length / 2);
-      const mid2 = Math.floor(w2.length / 2);      hybrid = w1.slice(0, mid1) + w2.slice(mid2);    } else {      hybrid = w1.slice(0, 2) + w2.slice(-2);    }
+      const mid2 = Math.floor(w2.length / 2);      hybrid = w1.slice(0, mid1) + w2.slice(mid2);    }
+  else {      hybrid = w1.slice(0, 2) + w2.slice(-2);    }
     // Clean up    hybrid = hybrid.replace(/([aeiou])\1+/gi, "$1");
  // reduce repeated vowels
- if (hybrid.length > 8) hybrid = hybrid.slice(0, 7);    chosen = hybrid.charAt(0).toUpperCase() + hybrid.slice(1).toLowerCase();  }  return chosen;}
-/** * THE FUSION ENGINE — the core new feature * Merges multiple languages into one "fused" language with probability. */function fuseLanguages(languages) {  if (!languages || languages.length < 2) {    return { error: "Il faut au moins 2 langues pour fusionner" };  }
+ if (hybrid.length > 8) hybrid = hybrid.slice(0, 7);    chosen = hybrid.charAt(0).toUpperCase() + hybrid.slice(1).toLowerCase();  }
+  return chosen;}
+/** * THE FUSION ENGINE — the core new feature * Merges multiple languages into one "fused" language with probability. */
+function fuseLanguages(languages) {  if (!languages || languages.length < 2) {    return { error: "Il faut au moins 2 langues pour fusionner" };  }
   const probResult = calculateFusionProbability(languages);
   const keys = ['hello', 'water', 'mother', 'one', 'two', 'three', 'sun', 'moon', 'fire', 'earth', 'man', 'woman', 'eat', 'sleep', 'big', 'good', 'house', 'tree', 'fish'];
   // === Generate fused lexicon probabilistically ===
-  const fusedLexicon = {};  keys.forEach(key => {    const allWords = languages.map(l => l[key]).filter(Boolean);    fusedLexicon[key] = probabilisticWordFusion(allWords, languages);  });
+const fusedLexicon = {};  keys.forEach(key => {    const allWords = languages.map(l => l[key]).filter(Boolean);    fusedLexicon[key] = probabilisticWordFusion(allWords, languages);  });
   // === Create a smart fused name ===
-  const nameParts = languages.map(l => l.name.split(' ')[0]);
-  let fusedName;  if (languages.length === 2) {    fusedName = `${nameParts[0].slice(0, 4)}-${nameParts[1].slice(0, 4)}`;  } else {    fusedName = nameParts.slice(0, 3).join('-') + (languages.length > 3 ? '+' : '');  }  fusedName = fusedName.charAt(0).toUpperCase() + fusedName.slice(1) + " (Fusion)";
+const nameParts = languages.map(l => l.name.split(' ')[0]);
+  let fusedName;  if (languages.length === 2) {    fusedName = `${nameParts[0].slice(0, 4)}-${nameParts[1].slice(0, 4)}`;  }
+  else {    fusedName = nameParts.slice(0, 3).join('-') + (languages.length > 3 ? '+' : '');  }  fusedName = fusedName.charAt(0).toUpperCase() + fusedName.slice(1) + " (Fusion)";
   // === Determine the "family" of the fusion ===
-  const families = [...new Set(languages.map(l => l.family))];
+const families = [...new Set(languages.map(l => l.family))];
   const fusedFamily = families.length === 1 ? families[0] : "Mixed / Proto-" + families[0];
   const regions = [...new Set(languages.map(l => l.region))];
   const fusedRegion = regions.length === 1 ? regions[0] : "Pan-African (fused)";
   // === Build the final fused language object ===
-  const fusedLang = {    id: "fused-" + Date.now(),    name: fusedName,    iso: "fus" + Math.floor(Math.random() * 900 + 100),    family: fusedFamily,    subfamily: "Fused",    region: fusedRegion,    countries: [...new Set(languages.flatMap(l => l.countries))].slice(0, 5),    speakers: Math.round(languages.reduce((sum, l) => sum + (l.speakers || 0), 0) * 0.6), // realistic reduction    script: "Latin (proposed)",    ...fusedLexicon,    _meta: {      sourceLanguages: languages.map(l => ({ id: l.id, name: l.name, iso: l.iso })),      fusionProbability: probResult.probability,      confidence: probResult.confidence,      algorithmVersion: "v2.0-probabilistic-fusion"    }  };  return {    fused: fusedLang,    probability: probResult,    sourceLanguages: languages  };}
-/** * Helper: Generate multiple fusion suggestions (for UI) */function generateFusionSuggestions(languages) {  const results = [];
+const fusedLang = {    id: "fused-" + Date.now(),    name: fusedName,    iso: "fus" + Math.floor(Math.random() * 900 + 100),    family: fusedFamily,    subfamily: "Fused",    region: fusedRegion,    countries: [...new Set(languages.flatMap(l => l.countries))].slice(0, 5),    speakers: Math.round(languages.reduce((sum, l) => sum + (l.speakers || 0), 0) * 0.6), // realistic reduction
+    script: "Latin (proposed)",    ...fusedLexicon,    _meta: {      sourceLanguages: languages.map(l => ({ id: l.id, name: l.name, iso: l.iso })),      fusionProbability: probResult.probability,      confidence: probResult.confidence,      algorithmVersion: "v2.0-probabilistic-fusion"    }  };
+  return {    fused: fusedLang,    probability: probResult,    sourceLanguages: languages  };}
+/** * Helper: Generate multiple fusion suggestions (for UI) */
+function generateFusionSuggestions(languages) {  const results = [];
   // Main fusion  results.push(fuseLanguages(languages));
   // If only 2 languages, also try with slight variations (simulated)
-  if (languages.length === 2) {    // We can simulate a second "more conservative" fusion    const conservative = { ...fuseLanguages(languages) };    if (conservative.fused) {      conservative.fused.name = conservative.fused.name.replace("(Fusion)", "(Conservative Fusion)");      conservative.probability.probability = Math.max(40, conservative.probability.probability - 12);    }    results.push(conservative);  }  return results;}
+  if (languages.length === 2) {    // We can simulate a second "more conservative" fusion    const conservative = { ...fuseLanguages(languages) };    if (conservative.fused) {      conservative.fused.name = conservative.fused.name.replace("(Fusion)", "(Conservative Fusion)");      conservative.probability.probability = Math.max(40, conservative.probability.probability - 12);    }    results.push(conservative);  }
+  return results;}
 // === Load Full Languages Dataset ===
-async function loadFullLanguages() {  try {    const response = await fetch('../data/languages_full.json');    if (response.ok) {      fullLanguages = await response.json();      console.log('Loaded full dataset:', fullLanguages.length);    } else {      // Fallback to core      fullLanguages = coreLanguages.map(l => ({        name: l.name,         iso: l.iso,         country: l.countries[0] || "Various",         country_code: "XX"      }));    }  } catch (e) {    console.warn('Using fallback language list');    fullLanguages = coreLanguages.map(l => ({      name: l.name,       iso: l.iso,       country: l.countries[0] || "Various",       country_code: "XX"    }));  }}
+async function loadFullLanguages() {  try {    const response = await fetch('../data/languages_full.json');    if (response.ok) {      fullLanguages = await response.json();      console.log('Loaded full dataset:', fullLanguages.length);    }
+  else {      // Fallback to core      fullLanguages = coreLanguages.map(l => ({        name: l.name,         iso: l.iso,         country: l.countries[0] || "Various",         country_code: "XX"      }));    }  } catch (e) {    console.warn('Using fallback language list');    fullLanguages = coreLanguages.map(l => ({      name: l.name,       iso: l.iso,       country: l.countries[0] || "Various",       country_code: "XX"    }));  }}
 // === RENDER LANGUAGES GRID ===
 let currentDisplayCount = 10;
 function renderLanguages(langs = coreLanguages) {  const grid = document.getElementById('languages-grid');  grid.innerHTML = '';
@@ -133,7 +146,9 @@ function showLanguageDetail(id) {  const lang = coreLanguages.find(l => l.id ===
   const lexiconDiv = document.getElementById('modal-lexicon');  lexiconDiv.innerHTML = `    <div class="grid grid-cols-2 gap-2 text-sm">      <div class="bg-zinc-950 rounded-2xl p-2.5"><span class="text-zinc-400 text-xs">Eau</span><br><span class="font-medium">${lang.water}</span></div>      <div class="bg-zinc-950 rounded-2xl p-2.5"><span class="text-zinc-400 text-xs">Mère</span><br><span class="font-medium">${lang.mother}</span></div>      <div class="bg-zinc-950 rounded-2xl p-2.5"><span class="text-zinc-400 text-xs">Un / Deux</span><br><span class="font-medium">${lang.one} / ${lang.two}</span></div>      <div class="bg-zinc-950 rounded-2xl p-2.5"><span class="text-zinc-400 text-xs">Trois</span><br><span class="font-medium">${lang.three}</span></div>      <div class="bg-zinc-950 rounded-2xl p-2.5"><span class="text-zinc-400 text-xs">Soleil</span><br><span class="font-medium">${lang.sun || '—'}</span></div>      <div class="bg-zinc-950 rounded-2xl p-2.5"><span class="text-zinc-400 text-xs">Lune</span><br><span class="font-medium">${lang.moon || '—'}</span></div>      <div class="bg-zinc-950 rounded-2xl p-2.5"><span class="text-zinc-400 text-xs">Feu</span><br><span class="font-medium">${lang.fire || '—'}</span></div>      <div class="bg-zinc-950 rounded-2xl p-2.5"><span class="text-zinc-400 text-xs">Terre</span><br><span class="font-medium">${lang.earth || '—'}</span></div>      <div class="bg-zinc-950 rounded-2xl p-2.5"><span class="text-zinc-400 text-xs">Homme / Femme</span><br><span class="font-medium">${lang.man || '—'} / ${lang.woman || '—'}</span></div>      <div class="bg-zinc-950 rounded-2xl p-2.5"><span class="text-zinc-400 text-xs">Manger</span><br><span class="font-medium">${lang.eat || '—'}</span></div>      <div class="bg-zinc-950 rounded-2xl p-2.5"><span class="text-zinc-400 text-xs">Dormir</span><br><span class="font-medium">${lang.sleep || '—'}</span></div>      <div class="bg-zinc-950 rounded-2xl p-2.5"><span class="text-zinc-400 text-xs">Grand / Bon</span><br><span class="font-medium">${lang.big || '—'} / ${lang.good || '—'}</span></div>      <div class="bg-zinc-950 rounded-2xl p-2.5"><span class="text-zinc-400 text-xs">Maison</span><br><span class="font-medium">${lang.house || '—'}</span></div>      <div class="bg-zinc-950 rounded-2xl p-2.5"><span class="text-zinc-400 text-xs">Arbre</span><br><span class="font-medium">${lang.tree || '—'}</span></div>      <div class="bg-zinc-950 rounded-2xl p-2.5"><span class="text-zinc-400 text-xs">Poisson</span><br><span class="font-medium">${lang.fish || '—'}</span></div>      <div class="bg-zinc-950 rounded-2xl p-2.5 col-span-2"><span class="text-zinc-400 text-xs">Bonjour</span><br><span class="font-medium">${lang.hello}</span></div>    </div>  `;  document.getElementById('lang-modal').classList.remove('hidden');  document.getElementById('lang-modal').classList.add('flex');}
 function hideLangModal() {  const modal = document.getElementById('lang-modal');  modal.classList.add('hidden');  modal.classList.remove('flex');}
 function compareWithLanguage() {  hideLangModal();
-  // scroll to comparison tool  document.getElementById('similarites').scrollIntoView({ behavior: 'smooth' });    setTimeout(() => {
+  // scroll to comparison tool
+  document.getElementById('similarites').scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => {
   const lang = coreLanguages.find(l => l.id === currentLangId);    if (!lang) return;
     const select1 = document.getElementById('compare-lang1');
     // Set the first select to this lang
@@ -191,7 +206,8 @@ async function init() { await loadFullLanguages(); await loadExtendedLanguages()
   const searchInput = document.getElementById('search-input');
   const familyFilter = document.getElementById('family-filter');
   const regionFilter = document.getElementById('region-filter');
-  // Keyboard shortcut  document.addEventListener('keydown', function(e) {
+  // Keyboard shortcut
+  document.addEventListener('keydown', function(e) {
   if (e.key === "/" && document.activeElement.tagName === "BODY") {      e.preventDefault();      searchInput.focus();    }  });
   // Initial message  console.log('%c[Khans] Site + Algorithme de Fusion Probabiliste initialisés avec succès (v2.0).', 'color:#166534');}
 // =====================================================// === FUSION UI FUNCTIONS (New Priority Feature) ===// =====================================================
@@ -199,27 +215,34 @@ let selectedForFusion = [];
 function populateFusionSelector() {  const listContainer = document.getElementById('fusion-dropdown-list');  if (!listContainer) return;  listContainer.innerHTML = '';  coreLanguages.forEach(lang => {    const flag = languageFlags[lang.id] || '🌍';
     const row = document.createElement('div');    row.className = `flex items-center justify-between px-3 py-[7px] rounded-xl hover:bg-zinc-800 active:bg-zinc-950 cursor-pointer text-sm`;        row.innerHTML = `      <div class="flex items-center gap-x-3">        <input type="checkbox" id="fus-${lang.id}" class="accent-zinc-300 w-3.5 h-3.5 pointer-events-none">        <span class="text-lg leading-none">${flag}</span>        <label for="fus-${lang.id}" class="font-medium cursor-pointer text-zinc-200">${lang.name}</label>        <span class="text-[10px] font-mono text-zinc-500">${lang.iso}</span>      </div>      <span class="text-xs text-zinc-500">${lang.family.split(' ')[0]}</span>    `;
     const checkbox = row.querySelector('input');
-        // Click on row toggles checkbox    row.onclick = (e) => {
+        // Click on row toggles checkbox
+        row.onclick = (e) => {
         if (e.target.tagName === 'INPUT') return;      checkbox.checked = !checkbox.checked;      handleFusionCheckboxChange(checkbox, lang.id);    };    checkbox.onchange = () => {      handleFusionCheckboxChange(checkbox, lang.id);    };    listContainer.appendChild(row);  });
-  // Initial sync of UI  updateFusionSelectedUI();}
-function handleFusionCheckboxChange(checkbox, langId) {  if (checkbox.checked) {    if (!selectedForFusion.includes(langId)) {      selectedForFusion.push(langId);    }  } else {    selectedForFusion = selectedForFusion.filter(id => id !== langId);  }
+  // Initial sync of UI
+  updateFusionSelectedUI();}
+function handleFusionCheckboxChange(checkbox, langId) {  if (checkbox.checked) {    if (!selectedForFusion.includes(langId)) {      selectedForFusion.push(langId);    }  }
+  else {    selectedForFusion = selectedForFusion.filter(id => id !== langId);  }
   // Enforce max 4
   if (selectedForFusion.length > 4) {    const last = selectedForFusion.pop();
     const lastCb = document.getElementById('fus-' + last);    if (lastCb) lastCb.checked = false;  }  updateFusionSelectedUI();}
-function updateFusionSelectedUI() {  // Update dropdown label
 function updateFusionSelectedUI() {  const label = document.getElementById('fusion-dropdown-label');
   const pillsContainer = document.getElementById('fusion-selected-pills');
   const chevron = document.getElementById('fusion-chevron');  if (!label || !pillsContainer) return;
-  const selectedLangs = coreLanguages.filter(l => selectedForFusion.includes(l.id));  if (selectedLangs.length === 0) {    label.textContent = 'Sélectionner 2 à 4 langues...';    label.classList.add('text-zinc-300');    label.classList.remove('text-white');  } else {    label.innerHTML = `${selectedLangs.length} sélectionnée${selectedLangs.length > 1 ? 's' : ''} <span class="text-zinc-500 text-xs">(${selectedLangs.map(l => l.name.split(' ')[0]).join(', ')})</span>`;    label.classList.remove('text-zinc-300');    label.classList.add('text-white');  }
-  // Pills  pillsContainer.innerHTML = '';  selectedLangs.forEach(lang => {
+  const selectedLangs = coreLanguages.filter(l => selectedForFusion.includes(l.id));  if (selectedLangs.length === 0) {    label.textContent = 'Sélectionner 2 à 4 langues...';    label.classList.add('text-zinc-300');    label.classList.remove('text-white');  }
+  else {    label.innerHTML = `${selectedLangs.length} sélectionnée${selectedLangs.length > 1 ? 's' : ''} <span class="text-zinc-500 text-xs">(${selectedLangs.map(l => l.name.split(' ')[0]).join(', ')})</span>`;    label.classList.remove('text-zinc-300');    label.classList.add('text-white');  }
+  // Pills
+  pillsContainer.innerHTML = '';
+  selectedLangs.forEach(lang => {
   const flag = languageFlags[lang.id] || '🌍';
     const pill = document.createElement('div');    pill.className = `inline-flex items-center gap-x-1.5 px-2.5 py-1 bg-zinc-800 border border-zinc-700 rounded-2xl text-xs`;    pill.innerHTML = `      <span>${flag}</span>      <span class="font-medium">${lang.name}</span>      <button onclick="removeFromFusionSelection(${lang.id}); event.stopImmediatePropagation();"               class="ml-0.5 text-zinc-400 hover:text-white w-3 h-3 flex items-center justify-center">×</button>    `;    pillsContainer.appendChild(pill);  });}
 function toggleFusionDropdown(e) {  if (e) e.stopImmediatePropagation();
   const list = document.getElementById('fusion-dropdown-list');
   const chevron = document.getElementById('fusion-chevron');  if (!list) return;
   const isHidden = list.classList.contains('hidden');
-    // Close all other dropdowns if needed (simple)  document.querySelectorAll('#fusion-dropdown-list').forEach(el => {
-    if (el !== list) el.classList.add('hidden');  });  if (isHidden) {    list.classList.remove('hidden');    list.classList.add('block');    if (chevron) chevron.style.transform = 'rotate(180deg)';  } else {    list.classList.add('hidden');    list.classList.remove('block');    if (chevron) chevron.style.transform = '';  }
+    // Close all other dropdowns if needed (simple)
+  document.querySelectorAll('#fusion-dropdown-list').forEach(el => {
+    if (el !== list) el.classList.add('hidden');  });  if (isHidden) {    list.classList.remove('hidden');    list.classList.add('block');    if (chevron) chevron.style.transform = 'rotate(180deg)';  }
+  else {    list.classList.add('hidden');    list.classList.remove('block');    if (chevron) chevron.style.transform = '';  }
   // Close on outside click
   const closeOnOutside = (ev) => {    if (!list.contains(ev.target) && ev.target.id !== 'fusion-dropdown-btn') {      list.classList.add('hidden');      list.classList.remove('block');      if (chevron) chevron.style.transform = '';      document.removeEventListener('click', closeOnOutside);    }  };  setTimeout(() => {    document.addEventListener('click', closeOnOutside, { once: true });  }, 10);}
 function removeFromFusionSelection(langId) {  selectedForFusion = selectedForFusion.filter(id => id !== langId);
@@ -227,7 +250,8 @@ function removeFromFusionSelection(langId) {  selectedForFusion = selectedForFus
 function selectAllForFusion() {  selectedForFusion = [];
   const list = document.getElementById('fusion-dropdown-list');  if (!list) return;
   const checkboxes = list.querySelectorAll('input[type="checkbox"]');  checkboxes.forEach((cb, i) => {    if (i < 4) {      cb.checked = true;
-      const id = parseInt(cb.id.replace('fus-', ''));      if (!selectedForFusion.includes(id)) selectedForFusion.push(id);    } else {      cb.checked = false;    }  });  updateFusionSelectedUI();}
+      const id = parseInt(cb.id.replace('fus-', ''));      if (!selectedForFusion.includes(id)) selectedForFusion.push(id);    }
+  else {      cb.checked = false;    }  });  updateFusionSelectedUI();}
 function clearFusionSelection() {  selectedForFusion = [];
   const list = document.getElementById('fusion-dropdown-list');  if (list) {    list.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);  }  updateFusionSelectedUI();}
 function performFusion() {  const resultBox = document.getElementById('fusion-result');  if (!resultBox) return;
@@ -249,7 +273,8 @@ function regenerateFusion() {  if (!window.lastFusionSources || window.lastFusio
 // =====================================================// === NEW BUILDER: Propros Construction Algorithm (v3.0) ===// === Construit une proto-langue "propros" par reconstruction cognatique ===// === à partir de toutes les langues des pays non-anglophones / non-arabophones ===// =====================================================
 const ANGLOPHONE_COUNTRIES = [  "United States", "United Kingdom", "Canada", "Australia", "New Zealand", "Ireland",  "South Africa", "Nigeria", "Ghana", "Kenya", "Uganda", "Zambia", "Zimbabwe",  "Botswana", "Malawi", "Sierra Leone", "Liberia", "Gambia", "South Sudan",  "Tanzania", "Lesotho", "Eswatini", "Mauritius"];
 const ARABOPHONE_COUNTRIES = [  "Algeria", "Egypt", "Libya", "Morocco", "Sudan", "Tunisia", "Mauritania",  "Somalia", "Djibouti", "Comoros",  "Saudi Arabia", "Yemen", "Oman", "United Arab Emirates", "Qatar", "Bahrain",  "Kuwait", "Jordan", "Lebanon", "Syria", "Iraq", "Palestine"];
-function isExcludedProprosCountry(country) {  const c = country.trim().toLowerCase();  return ANGLOPHONE_COUNTRIES.some(ac => ac.toLowerCase() === c) ||         ARABOPHONE_COUNTRIES.some(ac => ac.toLowerCase() === c);}
+function isExcludedProprosCountry(country) {  const c = country.trim().toLowerCase();
+  return ANGLOPHONE_COUNTRIES.some(ac => ac.toLowerCase() === c) ||         ARABOPHONE_COUNTRIES.some(ac => ac.toLowerCase() === c);}
 function getProprosFoundation() {  const fullCount = fullLanguages.length;  if (fullCount === 0) {    return { full: [], core: coreLanguages, totalFull: 0, totalCore: coreLanguages.length };  }
   // Filter FULL dataset by country exclusion
   const includedFull = fullLanguages.filter(e => !isExcludedProprosCountry(e.country));
@@ -259,7 +284,8 @@ function getProprosFoundation() {  const fullCount = fullLanguages.length;  if (
   const uniqueExcluded = [...new Map(excludedFull.map(e => [e.name, e])).values()];
   // Cross-reference with core 26 languages for word data
   const coreIncluded = coreLanguages.filter(lang =>    lang.countries.some(c => !isExcludedProprosCountry(c))  );
-  const coreExcluded = coreLanguages.filter(lang =>    lang.countries.every(c => isExcludedProprosCountry(c))  );  return {    allIncluded: uniqueIncluded,    allExcluded: uniqueExcluded,    coreIncluded,    coreExcluded,    totalFull,    totalIncluded: uniqueIncluded.length,    totalExcluded: uniqueExcluded.length,    coreIncludedCount: coreIncluded.length,    coreExcludedCount: coreExcluded.length  };}
+  const coreExcluded = coreLanguages.filter(lang =>    lang.countries.every(c => isExcludedProprosCountry(c))  );
+  return {    allIncluded: uniqueIncluded,    allExcluded: uniqueExcluded,    coreIncluded,    coreExcluded,    totalFull,    totalIncluded: uniqueIncluded.length,    totalExcluded: uniqueExcluded.length,    coreIncludedCount: coreIncluded.length,    coreExcludedCount: coreExcluded.length  };}
 function proprosWordBuild(words) {  const valid = [...new Set(    words.filter(w => w && w.trim())      .map(w => w.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''))  )];  if (valid.length === 0) return "—";  if (valid.length === 1) return valid[0].charAt(0).toUpperCase() + valid[0].slice(1);
   const clusters = [];
   const used = new Set();  for (let i = 0; i < valid.length; i++) {    if (used.has(i)) continue;
@@ -269,26 +295,29 @@ function proprosWordBuild(words) {  const valid = [...new Set(    words.filter(w
   let result;  if (bestCluster.length >= 2) {    const lengths = bestCluster.map(w => w.length).sort((a, b) => a - b);
     const medianLen = lengths[Math.floor(lengths.length / 2)];
     let proto = '';    for (let pos = 0; pos < medianLen; pos++) {      const freq = {};      bestCluster.forEach(w => { if (pos < w.length) freq[w[pos]] = (freq[w[pos]] || 0) + 1; });
-      let bestChar = '', bestCount = 0;      for (const [c, count] of Object.entries(freq)) {        if (count > bestCount) { bestChar = c; bestCount = count; }      }      proto += bestChar;    }    proto = proto.replace(/([aeiouà-ü])\1+/gi, '$1');    if (proto.length > 8) proto = proto.slice(0, 7);    result = proto;  } else {    const lengths = valid.map(w => w.length).sort((a, b) => a - b);
+      let bestChar = '', bestCount = 0;      for (const [c, count] of Object.entries(freq)) {        if (count > bestCount) { bestChar = c; bestCount = count; }      }      proto += bestChar;    }    proto = proto.replace(/([aeiouà-ü])\1+/gi, '$1');    if (proto.length > 8) proto = proto.slice(0, 7);    result = proto;  }
+  else {    const lengths = valid.map(w => w.length).sort((a, b) => a - b);
     const medianLen = lengths[Math.floor(lengths.length / 2)];
     const scored = valid.map(w => {      let score = 50;
-      const lenDiff = Math.abs(w.length - medianLen);      if (lenDiff <= 1) score += 25;      else if (w.length > 8) score -= 10;      if (/[aeiou]$/i.test(w)) score += 8;      if (/^[^aeiou][aeiou]/i.test(w)) score += 5;      if (w.length <= 3) score += 10;      return { word: w, score };    });    scored.sort((a, b) => b.score - a.score);    result = scored[0].word;  }  return result.charAt(0).toUpperCase() + result.slice(1);}
+      const lenDiff = Math.abs(w.length - medianLen);      if (lenDiff <= 1) score += 25;      else if (w.length > 8) score -= 10;      if (/[aeiou]$/i.test(w)) score += 8;      if (/^[^aeiou][aeiou]/i.test(w)) score += 5;      if (w.length <= 3) score += 10;      return { word: w, score };    });    scored.sort((a, b) => b.score - a.score);    result = scored[0].word;  }
+  return result.charAt(0).toUpperCase() + result.slice(1);}
 function buildProprosLanguage() {  const foundation = getProprosFoundation();
   const coreIncluded = foundation.coreIncluded;  if (coreIncluded.length < 2) {    return { error: "Pas assez de langues sources après filtrage." };  }
   const keys = ['hello', 'water', 'mother', 'one', 'two', 'three', 'sun', 'moon', 'fire', 'earth', 'man', 'woman', 'eat', 'sleep', 'big', 'good', 'house', 'tree', 'fish'];
   // === LEXICON from core languages with word data ===
-  const lexicon = {};  keys.forEach(key => {    const langWords = coreIncluded.map(l => l[key]).filter(Boolean);    lexicon[key] = proprosWordBuild(langWords);  });
+const lexicon = {};  keys.forEach(key => {    const langWords = coreIncluded.map(l => l[key]).filter(Boolean);    lexicon[key] = proprosWordBuild(langWords);  });
   // === AGGREGATION ===
-  const regions = [...new Set(coreIncluded.map(l => l.region))];
+const regions = [...new Set(coreIncluded.map(l => l.region))];
   const families = [...new Set(coreIncluded.map(l => l.family))];
   const allCountries = [...new Set(coreIncluded.flatMap(l => l.countries))];
   const totalSpeakers = coreIncluded.reduce((s, l) => s + (l.speakers || 0), 0);
   // === NAMING using full dataset ===
-  const regParts = [...new Set(regions.map(r => r.split(' ')[0].slice(0, 3)))].slice(0, 2).join('');
+const regParts = [...new Set(regions.map(r => r.split(' ')[0].slice(0, 3)))].slice(0, 2).join('');
   const famPrefix = families.length === 1 ? families[0].split('-')[0].slice(0, 4) : "Pan";
   const langName = `Propros-${famPrefix}${regParts}`;
   const excludedNames = foundation.coreExcluded.map(l => l.name);
-  const proprosLang = {    id: "propros-" + Date.now(),    name: langName,    iso: "prp",    family: families.length === 1 ? families[0] : "Proto-" + families.join('/'),    subfamily: "Propros (reconstruit)",    region: regions.length === 1 ? regions[0] : "Pan-African (propros)",    countries: allCountries.slice(0, 5),    speakers: Math.round(totalSpeakers * 0.25),    script: "Latin (proposé)",    ...lexicon,    _meta: {      fullDatasetTotal: foundation.totalFull,      fullDatasetIncluded: foundation.totalIncluded,      fullDatasetExcluded: foundation.totalExcluded,      sourceCount: coreIncluded.length,      excludedCount: foundation.coreExcluded.length,      sourceLanguages: coreIncluded.map(l => ({ id: l.id, name: l.name })),      excludedLanguages: foundation.coreExcluded.map(l => ({ id: l.id, name: l.name })),      algorithm: "v3.0-propros-builder",      method: "full-dataset country filter + cognate clustering + position-wise reconstruction"    }  };  return {    language: proprosLang,    foundation,    coreIncluded,    metrics: {      fullTotal: foundation.totalFull,      fullIncluded: foundation.totalIncluded,      fullExcluded: foundation.totalExcluded,      coreIncluded: coreIncluded.length,      coreExcluded: foundation.coreExcluded.length,      sourceNames: coreIncluded.map(l => l.name),      excludedNames,      regions,      families,      totalSpeakers    }  };}
+  const proprosLang = {    id: "propros-" + Date.now(),    name: langName,    iso: "prp",    family: families.length === 1 ? families[0] : "Proto-" + families.join('/'),    subfamily: "Propros (reconstruit)",    region: regions.length === 1 ? regions[0] : "Pan-African (propros)",    countries: allCountries.slice(0, 5),    speakers: Math.round(totalSpeakers * 0.25),    script: "Latin (proposé)",    ...lexicon,    _meta: {      fullDatasetTotal: foundation.totalFull,      fullDatasetIncluded: foundation.totalIncluded,      fullDatasetExcluded: foundation.totalExcluded,      sourceCount: coreIncluded.length,      excludedCount: foundation.coreExcluded.length,      sourceLanguages: coreIncluded.map(l => ({ id: l.id, name: l.name })),      excludedLanguages: foundation.coreExcluded.map(l => ({ id: l.id, name: l.name })),      algorithm: "v3.0-propros-builder",      method: "full-dataset country filter + cognate clustering + position-wise reconstruction"    }  };
+  return {    language: proprosLang,    foundation,    coreIncluded,    metrics: {      fullTotal: foundation.totalFull,      fullIncluded: foundation.totalIncluded,      fullExcluded: foundation.totalExcluded,      coreIncluded: coreIncluded.length,      coreExcluded: foundation.coreExcluded.length,      sourceNames: coreIncluded.map(l => l.name),      excludedNames,      regions,      families,      totalSpeakers    }  };}
 function performProprosBuild() {  const resultBox = document.getElementById('propros-result');  if (!resultBox) { console.error('propros-result not found'); return; }  resultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });  if (!fullLanguages || fullLanguages.length === 0) {    resultBox.innerHTML = `<div class="text-center text-zinc-300 py-8">⚠ Données complètes non chargées.</div>`;    return;  }  resultBox.innerHTML = `<div class="text-center py-8 text-zinc-300"><i class="fa-solid fa-flask fa-spin mr-2"></i> Analyse de ${fullLanguages.length} associations langue-pays...</div>`;  setTimeout(() => {    try {      const buildResult = buildProprosLanguage();      if (buildResult.error) {        resultBox.innerHTML = `<div class="text-center text-zinc-300 py-8">${buildResult.error}</div>`;        return;      }
       const lang = buildResult.language;
       const metrics = buildResult.metrics;
