@@ -1,0 +1,182 @@
+[
+  {
+    "id": 101, "name": "Baoulé", "iso": "bci", "family": "Niger-Congo", "subfamily": "Kwa", "region": "West Africa", "countries": ["Cote d'Ivoire"], "speakers": 7000000, "script": "Latin",
+    "hello": "Akwa", "water": "Nzué", "mother": "Nnan", "one": "Kun", "two": "Nnyron", "three": "Nsan",
+    "sun": "Klo", "moon": "Ngyé", "fire": "Kanda", "earth": "Tan", "man": "San", "woman": "Bla",
+    "eat": "Di", "sleep": "Kun", "big": "Kpangba", "good": "Wlè", "house": "Su", "tree": "Bou", "fish": "Gban"
+  },
+  {
+    "id": 102, "name": "Dioula", "iso": "dyu", "family": "Niger-Congo", "subfamily": "Mande", "region": "West Africa", "countries": ["Cote d'Ivoire", "Burkina Faso", "Mali"], "speakers": 12000000, "script": "Latin",
+    "hello": "I ni ce", "water": "Ji", "mother": "Ba", "one": "Kelen", "two": "Fila", "three": "Saba",
+    "sun": "Tile", "moon": "Kalo", "fire": "Ta", "earth": "Dugu", "man": "Cɛ", "woman": "Muso",
+    "eat": "Dun", "sleep": "Sunɔ", "big": "Bɔn", "good": "ɲuman", "house": "Sɔ", "tree": "Yiri", "fish": "Jɛgɛ"
+  },
+  {
+    "id": 103, "name": "Sénoufo", "iso": "sef", "family": "Niger-Congo", "subfamily": "Senufo", "region": "West Africa", "countries": ["Cote d'Ivoire", "Mali", "Burkina Faso"], "speakers": 4000000, "script": "Latin",
+    "hello": "N'golo", "water": "Ségué", "mother": "Na", "one": "N'golo", "two": "Sɛrɛ", "three": "Taan",
+    "sun": "Fyɛ", "moon": "Karakɛrɛ", "fire": "Namata", "earth": "Tɛrɛ", "man": "Sɛrɛ", "woman": "Kaso",
+    "eat": "Di", "sleep": "Yafɔr", "big": "Kati", "good": "Kpɛn", "house": "Kati", "tree": "Tugula", "fish": "Sa"
+  },
+  {
+    "id": 104, "name": "Bété", "iso": "btg", "family": "Niger-Congo", "subfamily": "Kru", "region": "West Africa", "countries": ["Cote d'Ivoire"], "speakers": 1000000, "script": "Latin",
+    "hello": "Sɔsɔ", "water": "Nɥi", "mother": "Nna", "one": "Do", "two": "Sɔn", "three": "Tanan",
+    "sun": "Gblo", "moon": "Sɛtɛ", "fire": "Yo", "earth": "Tɛ", "man": "Sɛ", "woman": "Wlɩ",
+    "eat": "Li", "sleep": "Kun", "big": "Klɩ", "good": "Sɛ", "house": "Kpɔ", "tree": "Sɛ", "fish": "Nyɛ"
+  },
+  {
+    "id": 105, "name": "Dan", "iso": "dnj", "family": "Niger-Congo", "subfamily": "Mande", "region": "West Africa", "countries": ["Cote d'Ivoire", "Liberia"], "speakers": 1500000, "script": "Latin",
+    "hello": "Kɔɔ", "water": "Yi", "mother": "Ya", "one": "Do", "two": "Pɛ", "three": "Yia",
+    "sun": "Zi", "moon": "Gɔ", "fire": "Dhi", "earth": "Tɔ", "man": "Zi", "woman": "Zaan",
+    "eat": "Dhe", "sleep": "Kɔn", "big": "Kpɛ", "good": "Fin", "house": "Kwa", "tree": "Dɛ", "fish": "Nyiɛ"
+  },
+  {
+    "id": 106, "name": "Wè", "iso": "wec", "family": "Niger-Congo", "subfamily": "Kru", "region": "West Africa", "countries": ["Cote d'Ivoire"], "speakers": 500000, "script": "Latin",
+    "hello": "Sɛ", "water": "Nyuu", "mother": "Nna", "one": "Dɔ", "two": "Sɔ", "three": "Tã",
+    "sun": "Gblé", "moon": "Sɛɛtɛ", "fire": "Yo", "earth": "Tɛ", "man": "Sɛ", "woman": "Blia",
+    "eat": "Di", "sleep": "Kpu", "big": "Kpla", "good": "Sanng", "house": "Kpɔ", "tree": "Sɛɛ", "fish": "Nyee"
+  },
+  {
+    "id": 107, "name": "Agni", "iso": "any", "family": "Niger-Congo", "subfamily": "Kwa", "region": "West Africa", "countries": ["Cote d'Ivoire", "Ghana"], "speakers": 1500000, "script": "Latin",
+    "hello": "Ago", "water": "Nzue", "mother": "Nna", "one": "Kun", "two": "Nnyon", "three": "Nsan",
+    "sun": "Akle", "moon": "Ngye", "fire": "Kanda", "earth": "Tan", "man": "San", "woman": "Bla",
+    "eat": "Di", "sleep": "Kun", "big": "Kpangba", "good": "Wlɛ", "house": "Su", "tree": "Bu", "fish": "Gban"
+  },
+  {
+    "id": 108, "name": "Attié", "iso": "ati", "family": "Niger-Congo", "subfamily": "Kwa", "region": "West Africa", "countries": ["Cote d'Ivoire"], "speakers": 600000, "script": "Latin",
+    "hello": "Mɔ̄", "water": "N̄dá", "mother": "N̄nán", "one": "Kpán", "two": "Nyɔ̄n", "three": "Nsán",
+    "sun": "Léklè", "moon": "Ngyé", "fire": "Kándá", "earth": "Tán", "man": "Sán", "woman": "Bídí",
+    "eat": "Lì", "sleep": "Lɔ̄", "big": "Kpákpá", "good": "Bwì", "house": "Sú", "tree": "Bó", "fish": "Gbān"
+  },
+  {
+    "id": 109, "name": "Gouro", "iso": "goa", "family": "Niger-Congo", "subfamily": "Mande", "region": "West Africa", "countries": ["Cote d'Ivoire"], "speakers": 400000, "script": "Latin",
+    "hello": "Kɔ", "water": "Yí", "mother": "Yá", "one": "Dó", "two": "Flá", "three": "Sá",
+    "sun": "Zí", "moon": "Kpɔ", "fire": "Dhí", "earth": "Tɔ́", "man": "Zíé", "woman": "Yírí",
+    "eat": "Dhé", "sleep": "Kɔ̄n", "big": "Gbán", "good": "Fíín", "house": "Kwà", "tree": "Tɛ́", "fish": "Nyié"
+  },
+  {
+    "id": 110, "name": "Abidji", "iso": "abi", "family": "Niger-Congo", "subfamily": "Kwa", "region": "West Africa", "countries": ["Cote d'Ivoire"], "speakers": 100000, "script": "Latin",
+    "hello": "Mɔ", "water": "Nzue", "mother": "Nnan", "one": "Kun", "two": "Nnyron", "three": "Nsan",
+    "sun": "Klè", "moon": "Ngyé", "fire": "Kanda", "earth": "Tan", "man": "San", "woman": "Bla",
+    "eat": "Li", "sleep": "Kun", "big": "Kpangba", "good": "Wlè", "house": "Su", "tree": "Bou", "fish": "Gba"
+  },
+  {
+    "id": 111, "name": "Susu", "iso": "sus", "family": "Niger-Congo", "subfamily": "Mande", "region": "West Africa", "countries": ["Guinea", "Sierra Leone"], "speakers": 2500000, "script": "Latin",
+    "hello": "I ni", "water": "Ye", "mother": "Nga", "one": "Keden", "two": "Firinyi", "three": "Saxanyi",
+    "sun": "Soge", "moon": "Kike", "fire": "Tɛ", "earth": "Bɔxi", "man": "Xɛmɛ", "woman": "Ginɛ",
+    "eat": "Dɔn", "sleep": "Xixɔr", "big": "Bɔn", "good": "Fan", "house": "Banxi", "tree": "Wuri", "fish": "Yixɛ"
+  },
+  {
+    "id": 112, "name": "Maninka", "iso": "mku", "family": "Niger-Congo", "subfamily": "Mande", "region": "West Africa", "countries": ["Guinea", "Mali", "Liberia"], "speakers": 5000000, "script": "Latin",
+    "hello": "I ni ce", "water": "Ji", "mother": "Ba", "one": "Kelen", "two": "Fila", "three": "Saba",
+    "sun": "Tile", "moon": "Kalo", "fire": "Ta", "earth": "Dugu", "man": "Kɛ", "woman": "Muso",
+    "eat": "Dun", "sleep": "Sunɔ", "big": "Bɔn", "good": "ɲuman", "house": "So", "tree": "Yiri", "fish": "Jɛgɛ"
+  },
+  {
+    "id": 113, "name": "Kissi", "iso": "kss", "family": "Niger-Congo", "subfamily": "Atlantic", "region": "West Africa", "countries": ["Guinea", "Liberia", "Sierra Leone"], "speakers": 1000000, "script": "Latin",
+    "hello": "Kɔlɛ", "water": "Mɛndɛ", "mother": "Yɛ", "one": "Hɛlɛn", "two": "Fɛndɛ", "three": "Ndaŋ",
+    "sun": "Kpɔng", "moon": "Siki", "fire": "Hɛng", "earth": "Kpɛlɛ", "man": "Wɔl", "woman": "Yɛlɛ",
+    "eat": "Di", "sleep": "Kpɛng", "big": "Kpɔkɔ", "good": "Fɔ", "house": "Kpɔ", "tree": "Tɛŋ", "fish": "Nyɛ"
+  },
+  {
+    "id": 114, "name": "Kpelle", "iso": "gkp", "family": "Niger-Congo", "subfamily": "Mande", "region": "West Africa", "countries": ["Guinea", "Liberia"], "speakers": 2000000, "script": "Latin",
+    "hello": "Ɛɛ kpɔ", "water": "Ya", "mother": "Nɔn", "one": "Ta", "two": "Fɛrɛ", "three": "Saɓa",
+    "sun": "Kpɔn", "moon": "Kalɔ", "fire": "Sɛ", "earth": "Kpɔlɔŋ", "man": "Kɛlɛi", "woman": "Nɛrɛi",
+    "eat": "Mi", "sleep": "Pɔ", "big": "Kpaya", "good": "Ɓɛrɛ", "house": "Pɛlɛ", "tree": "Tɛlɛŋ", "fish": "Nya"
+  },
+  {
+    "id": 115, "name": "Toma", "iso": "lom", "family": "Niger-Congo", "subfamily": "Mande", "region": "West Africa", "countries": ["Guinea", "Liberia"], "speakers": 300000, "script": "Latin",
+    "hello": "Kóó", "water": "Yé", "mother": "Yá", "one": "Dó", "two": "Félá", "three": "Sáá",
+    "sun": "Zí", "moon": "Gɔ́", "fire": "Yá", "earth": "Tɔ́", "man": "Zíé", "woman": "Yírí",
+    "eat": "Dhè", "sleep": "Mìn", "big": "Gbán", "good": "Kpáá", "house": "Kwà", "tree": "Tɛ́", "fish": "Nyé"
+  },
+  {
+    "id": 116, "name": "Pular", "iso": "fuf", "family": "Niger-Congo", "subfamily": "Atlantic", "region": "West Africa", "countries": ["Guinea", "Mali", "Senegal"], "speakers": 6000000, "script": "Latin",
+    "hello": "Salaam", "water": "Ndiyam", "mother": "Neene", "one": "Go'o", "two": "Didi", "three": "Tati",
+    "sun": "Naange", "moon": "Lewru", "fire": "Yiite", "earth": "Leydi", "man": "Gorko", "woman": "Debbo",
+    "eat": "Ñaamde", "sleep": "Daande", "big": "Mawdo", "good": "Moƴƴo", "house": "Suudu", "tree": "Lekki", "fish": "Liiñ"
+  },
+  {
+    "id": 117, "name": "Mooré", "iso": "mos", "family": "Niger-Congo", "subfamily": "Gur", "region": "West Africa", "countries": ["Burkina Faso"], "speakers": 7000000, "script": "Latin",
+    "hello": "Yee", "water": "Koom", "mother": "Ma", "one": "Yembre", "two": "Yiibu", "three": "Yii taab",
+    "sun": "Nedre", "moon": "Kiiga", "fire": "Bugu", "earth": "Tẽnga", "man": "Rao", "woman": "Paga",
+    "eat": "Di", "sleep": "Gi", "big": "Bedre", "good": "Sōma", "house": "Zaka", "tree": "Tɩɩga", "fish": "Zimse"
+  },
+  {
+    "id": 118, "name": "Gourmanché", "iso": "gux", "family": "Niger-Congo", "subfamily": "Gur", "region": "West Africa", "countries": ["Burkina Faso", "Togo", "Benin"], "speakers": 1200000, "script": "Latin",
+    "hello": "Yel", "water": "Di", "mother": "Na", "one": "Bunk", "two": "Jil", "three": "Tã",
+    "sun": "Wid", "moon": "Kya", "fire": "Nwa", "earth": "Tɛ", "man": "Miɛl", "woman": "Pɛl",
+    "eat": "Di", "sleep": "Kun", "big": "Ba", "good": "Sɔn", "house": "Yel", "tree": "Kya", "fish": "Zim"
+  },
+  {
+    "id": 119, "name": "Bissa", "iso": "bib", "family": "Niger-Congo", "subfamily": "Mande", "region": "West Africa", "countries": ["Burkina Faso"], "speakers": 600000, "script": "Latin",
+    "hello": "Kɛlɛ", "water": "Yí", "mother": "Ná", "one": "Dó", "two": "Pɛ́lɛ", "three": "Sáá",
+    "sun": "Wúlú", "moon": "Kálá", "fire": "Tá", "earth": "Tɔ̀", "man": "Kɛ́mɛ̀", "woman": "Músɔ̀",
+    "eat": "Dɔ́", "sleep": "Dɔ́", "big": "Bà", "good": "Káàn", "house": "Kpàlɛ", "tree": "Sɛ́n", "fish": "Nyɛ́"
+  },
+  {
+    "id": 120, "name": "Dagara", "iso": "dga", "family": "Niger-Congo", "subfamily": "Gur", "region": "West Africa", "countries": ["Burkina Faso", "Ghana"], "speakers": 400000, "script": "Latin",
+    "hello": "Aŋŋ", "water": "Ko", "mother": "Ma", "one": "Kannge", "two": "Ayii", "three": "Atãã",
+    "sun": "Winnü", "moon": "Kyuu", "fire": "La", "earth": "Tẽng", "man": "Daa", "woman": "Pɔge",
+    "eat": "Di", "sleep": "Gõõ", "big": "Kpɛŋ", "good": "Sõŋ", "house": "Yiri", "tree": "Tɩɩ", "fish": "Zim"
+  },
+  {
+    "id": 121, "name": "Lobi", "iso": "lob", "family": "Niger-Congo", "subfamily": "Gur", "region": "West Africa", "countries": ["Burkina Faso", "Cote d'Ivoire"], "speakers": 500000, "script": "Latin",
+    "hello": "Oon", "water": "Kpor", "mother": "Na", "one": "Hiir", "two": "Hinyɔr", "three": "Hitan",
+    "sun": "Wĩ", "moon": "Kpal", "fire": "Kpo", "earth": "Tɛn", "man": "Saa", "woman": "Pɛl",
+    "eat": "Di", "sleep": "Diir", "big": "Kpar", "good": "Sɔn", "house": "Yir", "tree": "Tir", "fish": "Zin"
+  },
+  {
+    "id": 122, "name": "Bobo Madaré", "iso": "bbo", "family": "Niger-Congo", "subfamily": "Gur", "region": "West Africa", "countries": ["Burkina Faso", "Mali"], "speakers": 300000, "script": "Latin",
+    "hello": "Kɛn", "water": "Tyu", "mother": "Nna", "one": "Tun", "two": "Pya", "three": "Sya",
+    "sun": "Yu", "moon": "Gɛn", "fire": "Sagɛ", "earth": "Bɛr", "man": "Kpɔn", "woman": "Kpon",
+    "eat": "Di", "sleep": "Zɔn", "big": "Kɛr", "good": "Sɔr", "house": "Dɛn", "tree": "Tɔr", "fish": "Zin"
+  },
+  {
+    "id": 123, "name": "Samo", "iso": "sbd", "family": "Niger-Congo", "subfamily": "Gur", "region": "West Africa", "countries": ["Burkina Faso"], "speakers": 200000, "script": "Latin",
+    "hello": "Awa", "water": "Kpo", "mother": "Ma", "one": "Kɛl", "two": "Nyɔ", "three": "Tã",
+    "sun": "Win", "moon": "Kyal", "fire": "Nwa", "earth": "Tɛ", "man": "Sɔ", "woman": "Pya",
+    "eat": "Di", "sleep": "Dɔ", "big": "Kpari", "good": "San", "house": "Yir", "tree": "Tir", "fish": "Zim"
+  },
+  {
+    "id": 124, "name": "Lyélé", "iso": "lee", "family": "Niger-Congo", "subfamily": "Gur", "region": "West Africa", "countries": ["Burkina Faso"], "speakers": 200000, "script": "Latin",
+    "hello": "Awa", "water": "Kpor", "mother": "Na", "one": "Dol", "two": "Yɛl", "three": "Kpor",
+    "sun": "Win", "moon": "Kal", "fire": "Nwa", "earth": "Tɛ", "man": "Saa", "woman": "Pɛl",
+    "eat": "Ri", "sleep": "Gun", "big": "Kpar", "good": "Sɔna", "house": "Yii", "tree": "Tir", "fish": "Zin"
+  },
+  {
+    "id": 125, "name": "Fon", "iso": "fon", "family": "Niger-Congo", "subfamily": "Kwa", "region": "West Africa", "countries": ["Benin"], "speakers": 2000000, "script": "Latin",
+    "hello": "Bonjour / Kudo", "water": "Sín", "mother": "Nɔ̀", "one": "Ɖè", "two": "Wè", "three": "Àtɔ̀n",
+    "sun": "Xwé", "moon": "Sín", "fire": "Mǐ", "earth": "Àìxì", "man": "Súnnù", "woman": "Nyɔ̀nù",
+    "eat": "ɖù", "sleep": "Mlɔ̃", "big": "Kpá", "good": "Dá", "house": "Xwé", "tree": "Atín", "fish": "Hwè"
+  },
+  {
+    "id": 126, "name": "Zarma", "iso": "dje", "family": "Nilo-Saharan", "subfamily": "Songhay", "region": "West Africa", "countries": ["Niger", "Mali", "Burkina Faso"], "speakers": 5000000, "script": "Latin",
+    "hello": "Fofo", "water": "Hari", "mother": "Nga", "one": "Afodo", "two": "Ife", "three": "Ahinza",
+    "sun": "Ziina", "moon": "Handu", "fire": "Nuna", "earth": "Laabu", "man": "Argu", "woman": "Waybor",
+    "eat": "Ngun", "sleep": "Hun", "big": "Ber", "good": "Bori", "house": "Kwa", "tree": "Tugu", "fish": "Hari"
+  },
+  {
+    "id": 127, "name": "Kabiyè", "iso": "kbp", "family": "Niger-Congo", "subfamily": "Gur", "region": "West Africa", "countries": ["Togo"], "speakers": 1000000, "script": "Latin",
+    "hello": "Dani", "water": "Lɩm", "mother": "Na", "one": "Kʊɖʊ", "two": "Naalɛ", "three": "Natozo",
+    "sun": "Wɩlɩ", "moon": "Fɛlɛ", "fire": "Mɛlɛ", "earth": "Tɩ", "man": "Hɩyʊ", "woman": "Halɩ",
+    "eat": "ɖʊ", "sleep": "Lɩ", "big": "Kʊkʊ", "good": "Sɔ́", "house": "Sɩ", "tree": "Tɩɩ", "fish": "Hɩdɩ"
+  },
+  {
+    "id": 128, "name": "Mina", "iso": "gej", "family": "Niger-Congo", "subfamily": "Kwa", "region": "West Africa", "countries": ["Togo"], "speakers": 300000, "script": "Latin",
+    "hello": "Woezɔ", "water": "Tsi", "mother": "Nɔ", "one": "ɖeka", "two": "Eve", "three": "Etɔ",
+    "sun": "Ŋdɔ", "moon": "Ɖa", "fire": "Dzo", "earth": "Anyigba", "man": "Ŋutsu", "woman": "Nyɔnu",
+    "eat": "ɖu", "sleep": "Lɔ", "big": "Lolo", "good": "Nyui", "house": "Xɔ", "tree": "Ati", "fish": "Aɖaŋ"
+  },
+  {
+    "id": 129, "name": "Bariba", "iso": "bba", "family": "Niger-Congo", "subfamily": "Gur", "region": "West Africa", "countries": ["Benin", "Nigeria"], "speakers": 500000, "script": "Latin",
+    "hello": "Sannu", "water": "Yii", "mother": "Nɔ", "one": "Tɛn", "two": "Yɛru", "three": "Yɛtɛ",
+    "sun": "Wɛndu", "moon": "Ɲɔnu", "fire": "Bunu", "earth": "Tɛm", "man": "Wɛru", "woman": "Mɛru",
+    "eat": "Mɔ", "sleep": "Sɔn", "big": "Hɛndo", "good": "Bari", "house": "Tɛm", "tree": "Sɔsu", "fish": "Kpɔn"
+  },
+  {
+    "id": 130, "name": "Tem", "iso": "kdh", "family": "Niger-Congo", "subfamily": "Gur", "region": "West Africa", "countries": ["Togo"], "speakers": 300000, "script": "Latin",
+    "hello": "Abalə", "water": "Lím", "mother": "Nyɔɔ", "one": "Kələŋ", "two": "Nyɔ", "three": "Ntɔ",
+    "sun": "Wɩlɩ", "moon": "Kpá", "fire": "Mɛlɛ", "earth": "Tɛ", "man": "Ncé", "woman": "Lií",
+    "eat": "Mɔ", "sleep": "Cɔ", "big": "Kʊlʊ", "good": "Sɔ", "house": "Sə́", "tree": "Tí", "fish": "Cém"
+  }
+]

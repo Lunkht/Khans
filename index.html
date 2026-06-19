@@ -529,6 +529,39 @@
         </div>
     </div>
 
+    <!-- ALPHABET CREATOR SECTION -->
+    <div id="alphabet-section" class="max-w-screen-2xl mx-auto px-8 py-12 bg-zinc-900 border-y border-zinc-800">
+        <div class="mb-6">
+            <div class="flex items-center gap-x-3 mb-2">
+                <div class="px-4 py-1 bg-zinc-800 text-zinc-300 rounded-3xl text-sm font-semibold flex items-center">
+                    <i class="fa-solid fa-font mr-2"></i> NEW
+                </div>
+                <span class="text-zinc-400 text-sm">Algorithme v3.5</span>
+            </div>
+            <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">Créateur d'Alphabets</h2>
+            <p class="text-sm sm:text-base text-zinc-400 mt-2 max-w-xl">
+                Analyse phonémique automatique pour créer ou améliorer l'alphabet d'une langue africaine.
+            </p>
+            <div class="mt-4 flex flex-wrap items-center gap-2 text-xs">
+                <select id="alphabet-lang-select" class="bg-zinc-950 border border-zinc-700 rounded-2xl px-3 py-2 text-sm outline-none">
+                    <option value="">Sélectionner une langue...</option>
+                </select>
+                <button onclick="performAlphabetAnalysis(parseInt(document.getElementById('alphabet-lang-select').value))"
+                        class="px-5 py-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-3xl font-medium flex items-center gap-x-2">
+                    <i class="fa-solid fa-font"></i>
+                    <span>Analyser</span>
+                </button>
+            </div>
+        </div>
+        <div id="alphabet-result" class="bg-zinc-950 border border-zinc-800 rounded-3xl p-6 min-h-[200px]">
+            <div class="flex flex-col items-center justify-center text-center h-full">
+                <i class="fa-solid fa-font text-4xl mb-3 opacity-30 text-zinc-400"></i>
+                <div class="text-sm text-zinc-400">Sélectionnez une langue et cliquez sur "Analyser"</div>
+                <div class="text-xs text-zinc-500 mt-1">L'algorithme propose un alphabet basé sur le lexique existant</div>
+            </div>
+        </div>
+    </div>
+
     <!-- Données Section -->
     <div id="donnees" class="bg-zinc-900 border-t border-zinc-800">
         <div class="max-w-screen-2xl mx-auto px-8 py-12">
@@ -615,10 +648,16 @@
                 </div>
             </div>
             
-            <div class="bg-zinc-950 px-6 py-4 flex items-center justify-between border-t border-zinc-700">
-                <div class="text-xs text-zinc-300 cursor-pointer flex items-center gap-x-1.5" onclick="compareWithLanguage()">
-                    <i class="fa-solid fa-link"></i>
-                    <span>Comparer avec une autre langue</span>
+            <div class="bg-zinc-950 px-6 py-4 flex flex-wrap items-center justify-between gap-2 border-t border-zinc-700">
+                <div class="flex items-center gap-x-3">
+                    <div class="text-xs text-zinc-300 cursor-pointer flex items-center gap-x-1.5" onclick="compareWithLanguage()">
+                        <i class="fa-solid fa-link"></i>
+                        <span>Comparer</span>
+                    </div>
+                    <div class="text-xs text-zinc-300 cursor-pointer flex items-center gap-x-1.5" onclick="modalOpenAlphabet()">
+                        <i class="fa-solid fa-font"></i>
+                        <span>Alphabet</span>
+                    </div>
                 </div>
                 <button onclick="hideLangModal()" class="px-4 py-1 text-sm font-medium">Fermer</button>
             </div>
@@ -626,5 +665,6 @@
     </div>
 
     <script src="app.js"></script>
+    <script src="app_extensions.js"></script>
 </body>
 </html>
